@@ -4,26 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/app_background"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/app_background"
-        android:scaleType="centerCrop"
-        tools:ignore="ContentDescription" />
-
     <TextView
+        android:id="@+id/startText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:layout_above="@id/loginButton"
         android:textSize="35sp"
-        android:textColor="@color/darkBlueColor"
-        android:layout_margin="20dp"
         android:fontFamily="sans-serif-black"
-        tools:text="Get started with VenueKoi"
-        tools:ignore="UnusedAttribute" />
+        android:textColor="@color/darkBlueColor"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="60dp"
+        android:text="@string/get_started" />
 
     <Button
         android:id="@+id/loginButton"
@@ -33,9 +29,9 @@
         android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="163dp"
+        android:layout_marginBottom="160dp"
         android:background="@color/colorPrimary"
-        android:textColor="@color/whiteText"
-        tools:text="Enter your mobile number to login" />
+        android:text="@string/mobile_number_to_login"
+        android:textColor="@color/whiteText" />
 
 </RelativeLayout>
