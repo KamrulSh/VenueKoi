@@ -60,6 +60,7 @@ public class VenueActivity extends AppCompatActivity implements View.OnClickList
                 || super.onSupportNavigateUp();
     }
 
+    // btn click for logout
     @Override
     public void onClick(View view) {
         AuthUI.getInstance()
