@@ -8,7 +8,7 @@
     </style>
 
     <style name="MyTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/app_background1</item>
+        <item name="android:windowBackground">@color/whiteText</item>
     </style>
 
 </resources>

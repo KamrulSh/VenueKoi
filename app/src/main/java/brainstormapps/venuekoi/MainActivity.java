@@ -2,38 +2,40 @@ package brainstormapps.venuekoi;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final int MY_REQUEST_CODE = 7772;
     List<AuthUI.IdpConfig> providers;
-    Button btnSignOut;
+    Button btnVenue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnSignOut = findViewById(R.id.btn_sign_out);
-        btnSignOut.setOnClickListener(this);
+        btnVenue = findViewById(R.id.btn_veneu);
+        btnVenue.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
+            startActivity(intent);
+        });
+
+        /*btnSignOut = findViewById(R.id.btn_sign_out);
+        btnSignOut.setOnClickListener(this);*/
+
         //printKeyHash();
 
         // init providers
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // get user
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Toast.makeText(this, "You have logged in.", Toast.LENGTH_SHORT).show();
-                btnSignOut.setEnabled(true);
+                //btnSignOut.setEnabled(true);
             } else {
                 Toast.makeText(this, "Error! "+response.getError().getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // implements onCLick for btnSignOut
-    @Override
+    /*@Override
     public void onClick(View view) {
         AuthUI.getInstance()
                 .signOut(MainActivity.this)
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 
     /*private void printKeyHash() {
         try{

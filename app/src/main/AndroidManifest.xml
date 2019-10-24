@@ -3,23 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="brainstormapps.venuekoi">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning"
-        android:allowBackup="true"
-        android:fullBackupContent="true">
-
-        <!--fb login start-->
-        <!--<meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_application_id"/>-->
-
-        <!--<activity android:name="com.facebook.FacebookActivity"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Main2Activity"></activity>
+        <!-- fb login start -->
+        <!--
+<meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_application_id"/>
+        -->
+        <!--
+<activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
@@ -32,9 +34,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity>-->
-        <!--fb login end-->
-
+        </activity>
+        -->
+        <!-- fb login end -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

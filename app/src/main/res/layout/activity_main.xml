@@ -50,7 +50,7 @@
         android:layout_marginBottom="240dp"
         android:text="Search venue" />
 
-    <Button
+    <!--<Button
         android:id="@+id/btn_sign_out"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -64,7 +64,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="160dp"
         android:layout_marginTop="30dp"/>
-
+-->
 
 
 </RelativeLayout>
