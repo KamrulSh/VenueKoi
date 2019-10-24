@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">VenueKoi</string>
     <string name="get_started">Get started with VenueKoi</string>
-    <string name="mobile_number_to_login">Enter your mobile number to login</string>
+
+    <!--<string name="facebook_login">Facebook login</string>
+    <string name="facebook_application_id">1236590283207982</string>
+    <string name="facebook_login_protocol_scheme">fb1236590283207982</string>-->
+
 </resources>
