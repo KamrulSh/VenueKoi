@@ -14,7 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Main2Activity" /> <!-- fb login start -->
+        <activity
+            android:name=".VenueActivity"
+            android:label="@string/title_activity_venue"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <!-- fb login start -->
         <!--
 <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_application_id"/>
