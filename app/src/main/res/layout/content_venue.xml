@@ -22,7 +22,7 @@
         android:id="@+id/btn_sign_out"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="sign out"
+        android:text="@string/logout"
         android:textColor="@color/whiteText"
         android:background="@color/darkBlueColor"
         android:layout_gravity="center_horizontal"

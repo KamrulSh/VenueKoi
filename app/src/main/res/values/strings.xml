@@ -18,6 +18,7 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="logout">Logout</string>
 
     <!--<string name="facebook_login">Facebook login</string>
     <string name="facebook_application_id">1236590283207982</string>
