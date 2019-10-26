@@ -1,25 +1,20 @@
 package brainstormapps.venuekoi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.navigation.NavigationView;
 
-public class VenueActivity extends AppCompatActivity implements View.OnClickListener {
+public class VenueActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private AppBarConfiguration mAppBarConfiguration;
     Button btnSignOut;
 
     @Override
@@ -31,19 +26,15 @@ public class VenueActivity extends AppCompatActivity implements View.OnClickList
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
         btnSignOut = findViewById(R.id.btn_sign_out);
-        btnSignOut.setOnClickListener(this);
+
     }
 
     @Override
@@ -54,18 +45,40 @@ public class VenueActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        int id = menuItem.getItemId();
+        Intent intent = null;
+
+        switch (id) {
+            case R.id.nav_gallery:
+
+            case R.id.nav_slideshow:
+
+            case R.id.nav_tools:
+
+            case R.id.nav_home:
+                intent = new Intent(this, ProfileActivity.class);
+                break;
+
+        }
+        startActivity(intent);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
-    // btn click for logout
     @Override
-    public void onClick(View view) {
-        AuthUI.getInstance()
-                .signOut(VenueActivity.this)
-                .addOnCompleteListener(task -> btnSignOut.setEnabled(false))
-                .addOnFailureListener(e -> Toast.makeText(VenueActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show());
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
+
 }
