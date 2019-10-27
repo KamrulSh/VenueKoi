@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnVenue = findViewById(R.id.btn_veneu);
         btnVenue.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), VenueActivity.class);
+            Intent intent = new Intent(getApplicationContext(), VenueListActivity.class);
             startActivity(intent);
         });
 

@@ -14,14 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ProfileActivity"
-            android:label="Profile"
-            android:parentActivityName=".VenueActivity"/>
+        <activity android:name=".VenueDetailsActivity"></activity>
         <activity
-            android:name=".VenueActivity"
+            android:name=".ProfileActivity"
+            android:label="Profile"
+            android:parentActivityName=".VenueListActivity" />
+        <activity
+            android:name=".VenueListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

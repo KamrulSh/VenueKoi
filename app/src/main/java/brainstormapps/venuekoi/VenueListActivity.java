@@ -2,10 +2,8 @@ package brainstormapps.venuekoi;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -25,17 +23,17 @@ import com.squareup.picasso.Picasso;
 import brainstormapps.venuekoi.Model.Venue;
 import brainstormapps.venuekoi.ViewHolder.VenueViewHolder;
 
-public class VenueActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class VenueListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseDatabase database;
     DatabaseReference venueItemRef;
     RecyclerView recyclerVenue;
     RecyclerView.LayoutManager layoutManager;
-
+    FirebaseRecyclerAdapter<Venue, VenueViewHolder> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_venue);
+        setContentView(R.layout.activity_venue_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -65,7 +63,7 @@ public class VenueActivity extends AppCompatActivity implements NavigationView.O
 
     private void loadVenueItem() {
         //Log.d("fimg", "item passed");
-        FirebaseRecyclerAdapter<Venue, VenueViewHolder> adapter = new FirebaseRecyclerAdapter<Venue, VenueViewHolder>(
+        adapter = new FirebaseRecyclerAdapter<Venue, VenueViewHolder>(
                 Venue.class, R.layout.home_venue_item, VenueViewHolder.class, venueItemRef) {
             @Override
             protected void populateViewHolder(VenueViewHolder venueViewHolder, Venue venue, int i) {
@@ -73,8 +71,15 @@ public class VenueActivity extends AppCompatActivity implements NavigationView.O
                 Picasso.get().load(venue.getImage()).into(venueViewHolder.imgVenue);
                 //Log.d("fimg", venue.getName()+" item passed");
 
-                venueViewHolder.setItemClickListener((view, position, isLongClick) -> Toast.makeText(
-                        VenueActivity.this, ""+ venue.getName(), Toast.LENGTH_SHORT).show());
+                /*venueViewHolder.setItemClickListener((view, position, isLongClick) -> Toast.makeText(
+                        VenueListActivity.this, ""+ venue.getName(), Toast.LENGTH_SHORT).show());*/
+
+                // send venue id to venue details activity for showing details
+                venueViewHolder.setItemClickListener((view, position, isLongClick) -> {
+                    Intent venueIntent = new Intent(VenueListActivity.this, VenueDetailsActivity.class);
+                    venueIntent.putExtra("VenueId", adapter.getRef(position).getKey());
+                    startActivity(venueIntent);
+                });
             }
         };
         recyclerVenue.setAdapter(adapter);

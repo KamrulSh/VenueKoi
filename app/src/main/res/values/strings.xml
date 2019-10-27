@@ -16,6 +16,8 @@
     <string name="venue_list">Venue List</string>
     <string name="booked_item">Booked Item</string>
     <string name="profile">Profile</string>
+    <string name="amenities">Amenities</string>
+    <string name="details">Details</string>
 
     <!--<string name="facebook_login">Facebook login</string>
     <string name="facebook_application_id">1236590283207982</string>
