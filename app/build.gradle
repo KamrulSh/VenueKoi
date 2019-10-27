@@ -42,11 +42,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // additional dependencies
-    implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.jakewharton:butterknife:10.2.0'
     //implementation 'com.facebook.android:facebook-android-sdk:5.8.0'
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
+    implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
