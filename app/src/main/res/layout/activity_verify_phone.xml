@@ -23,9 +23,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:paddingEnd="?attr/actionBarSize"
-                android:paddingRight="?attr/actionBarSize"
-                android:text="VERIFICATION"
+                android:text="@string/verification_process"
+                android:fontFamily="@font/texgyre"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -42,11 +41,12 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <ImageView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:src="@drawable/img_code_verification"
                 tools:ignore="ContentDescription" />
 
@@ -55,7 +55,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="OTP has been sent to you on your mobile phone. Please enter it below"
+                android:fontFamily="@font/texgyre"
+                android:text="@string/otp_has_been_sent"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                 android:textColor="@color/darkBlueColor" />
 
@@ -71,10 +72,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:hint="Code"
+                    android:hint="@string/enter_code"
                     android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true"
+                    android:fontFamily="@font/texgyre"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textColor="@color/darkBlueColor">
                     <requestFocus />
@@ -89,7 +91,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:background="@color/darkBlueColor"
-                android:text="VERIFY"
+                android:text="@string/verify"
+                android:fontFamily="@font/texgyre"
                 android:textColor="@color/whiteText" />
 
 

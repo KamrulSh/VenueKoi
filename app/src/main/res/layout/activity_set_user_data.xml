@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/enter_your_name"
+        android:fontFamily="@font/texgyre"
         android:textSize="25sp"
         android:textColor="@color/darkBlueColor"/>
 
@@ -20,6 +21,7 @@
         android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/texgyre"
         android:layout_marginBottom="20dp"
         tools:ignore="Autofill,LabelFor,TextFields" />
 
@@ -27,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:fontFamily="@font/texgyre"
         android:text="@string/enter_your_address"
         android:textSize="25sp"
         android:textColor="@color/darkBlueColor"/>
@@ -35,6 +38,7 @@
         android:id="@+id/user_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/texgyre"
         android:layout_marginBottom="20dp"
         tools:ignore="Autofill,LabelFor,TextFields" />
 
@@ -42,6 +46,8 @@
         android:id="@+id/user_save_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/texgyre"
+        android:textSize="20sp"
         android:background="@color/darkBlueColor"
         android:text="@string/save_and_continue"
         android:textColor="@color/whiteText"

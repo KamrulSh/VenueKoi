@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_margin="10dp"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     app:cardElevation="4dp">
 
     <RelativeLayout
@@ -16,19 +16,34 @@
             android:id="@+id/venue_image"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/venue_name"
             tools:text="ABS convention center"
-            android:textColor="@color/whiteText"
-            android:background="@color/colorPrimary"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:layout_alignParentBottom="true"
+            android:textColor="@color/darkBlueColor"
+            android:background="@color/whiteText"
+            android:textSize="17sp"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/texgyre"
+            android:layout_below="@id/venue_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/venue_price"
+            android:text="@string/tk_100000"
+            android:textColor="@color/darkBlueColor"
+            android:background="@color/whiteText"
+            android:textSize="16sp"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/texgyre"
+            android:layout_below="@id/venue_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
 
     </RelativeLayout>
 

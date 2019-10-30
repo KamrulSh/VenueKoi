@@ -12,19 +12,22 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <ImageView
-            android:layout_width="220dp"
-            android:layout_height="220dp"
-            android:src="@drawable/img_number_verification" />
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:src="@drawable/img_number_verification"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Verify Your Number"
+            android:text="@string/verify_your_number"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
             android:textColor="@color/darkBlueColor"
+            android:fontFamily="@font/texgyre"
             android:textStyle="bold" />
 
         <TextView
@@ -32,7 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="Please enter your mobile number to receive a verification code"
+            android:fontFamily="@font/texgyre"
+            android:textStyle="bold"
+            android:text="@string/please_enter_mobile_number"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
             android:textColor="@color/darkBlueColor" />
 
@@ -50,7 +55,8 @@
                 android:inputType="phone"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="+880"
+                android:text="@string/_880"
+                android:fontFamily="@font/texgyre"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textColor="@color/darkBlueColor" />
 
@@ -62,10 +68,11 @@
                 android:id="@+id/editTextPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Phone Number"
+                android:hint="@string/phone_number"
                 android:inputType="phone"
                 android:maxLines="1"
                 android:singleLine="true"
+                android:fontFamily="@font/texgyre"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textColor="@color/darkBlueColor">
 
@@ -80,7 +87,8 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_rounded_red"
-            android:text="CONTINUE"
+            android:text="@string/continue_btn"
+            android:fontFamily="@font/texgyre"
             android:textColor="@color/whiteText" />
 
     </LinearLayout>

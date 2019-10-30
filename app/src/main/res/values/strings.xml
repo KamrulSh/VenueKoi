@@ -26,6 +26,17 @@
     <string name="enter_your_name">Enter your name:</string>
     <string name="enter_your_address">Enter your address:</string>
     <string name="save_and_continue">Save and Continue</string>
+    <string name="verify_your_number">Verify Your Number</string>
+    <string name="please_enter_mobile_number">Please enter your mobile number to receive a verification code</string>
+    <string name="_880">+880</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="continue_btn">Continue</string>
+    <string name="verification_process">VERIFICATION PROCESS</string>
+    <string name="otp_has_been_sent">OTP has been sent to you on your mobile phone. Please enter it below</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="verify">VERIFY</string>
+    <string name="tk_100000">Tk. 100000</string>
+    <string name="tk">Tk.</string>
 
     <!--<string name="facebook_login">Facebook login</string>
     <string name="facebook_application_id">1236590283207982</string>

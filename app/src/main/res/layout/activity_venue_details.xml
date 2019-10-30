@@ -69,9 +69,9 @@
                         tools:text="Venue name"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:padding="8dp"
-                        android:layout_marginTop="10dp"
-                        android:textColor="@color/colorPrimary"
+                        android:padding="10dp"
+                        android:fontFamily="@font/texgyre"
+                        android:textColor="@color/darkBlueColor"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -84,19 +84,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <ImageView
-                            android:src="@drawable/ic_attach_money"
-                            android:layout_weight="1"
-                            android:layout_width="0dp"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            tools:ignore="ContentDescription,VectorDrawableCompat" />
+                            android:text="@string/tk"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:fontFamily="@font/texgyre"
+                            android:textColor="@color/blackColor"
+                            android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/venue_priceX"
                             tools:text="1,00,000"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/darkBlueColor"
+                            android:fontFamily="@font/texgyre"
+                            android:textColor="@color/blackColor"
                             android:layout_weight="9"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content">
@@ -125,9 +129,10 @@
                         android:layout_height="wrap_content"
                         android:padding="8dp"
                         android:text="@string/amenities"
+                        android:fontFamily="@font/texgyre"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/darkBlueColor"/>
+                        android:textColor="@color/blackColor"/>
 
                     <TextView
                         android:id="@+id/venue_detailsX"
@@ -135,8 +140,9 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:lineSpacingMultiplier="1.5"
+                        android:fontFamily="@font/texgyre"
                         android:text="@string/details"
-                        android:textColor="@color/darkBlueColor"/>
+                        android:textColor="@color/blackColor"/>
 
                 </LinearLayout>
 
