@@ -3,6 +3,7 @@ package brainstormapps.venuekoi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -59,7 +60,10 @@ public class VenueDetailsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Venue venue = dataSnapshot.getValue(Venue.class);
 
-                collapsingToolbarX.setTitle(venue.getName());
+                collapsingToolbarX.setTitle("VenueKoi");
+
+                /*Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), R.style.AdidasFont);
+                collapsingToolbarX.setExpandedTitleTextAppearance(typeface);*/
                 // set image
                 Picasso.get().load(venue.getImage()).into(venueImageX);
                 venueNameX.setText(venue.getName());

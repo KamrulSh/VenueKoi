@@ -1,5 +1,6 @@
 package brainstormapps.venuekoi;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,17 +73,23 @@ public class MainActivity extends AppCompatActivity {
             Log.d("phoneNo2", currentUserPhone);
             DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
 
+            final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Please wait...");
+            progressDialog.show();
+
             postReference.orderByChild("phone").equalTo(currentUserPhone)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 Log.d("phoneNo3", currentUserPhone);
+                                progressDialog.dismiss();
                                 Intent intent = new Intent(MainActivity.this, VenueListActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             } else {
                                 Log.d("phoneNo4", currentUserPhone);
+                                progressDialog.dismiss();
                                 Intent intent = new Intent(MainActivity.this, SetUserDataActivity.class);
                                 intent.putExtra("userPhoneNumber", currentUserPhone);
                                 startActivity(intent);

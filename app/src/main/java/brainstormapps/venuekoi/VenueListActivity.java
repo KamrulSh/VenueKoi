@@ -70,6 +70,7 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
             @Override
             protected void populateViewHolder(VenueViewHolder venueViewHolder, Venue venue, int i) {
                 venueViewHolder.txtVenueName.setText(venue.getName());
+                venueViewHolder.txtVenuePrice.setText(venue.getPrice());
                 Picasso.get().load(venue.getImage()).into(venueViewHolder.imgVenue);
 
                 // send venue id to venue details activity for showing details
@@ -109,10 +110,6 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
         switch (id) {
             case R.id.nav_bookedItem:
                 intent = new Intent(this, ProfileActivity.class);
-                break;
-
-            case R.id.nav_venueList:
-                intent = new Intent(this, VenueListActivity.class);
                 break;
 
             case R.id.nav_logout:

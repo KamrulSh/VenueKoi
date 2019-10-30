@@ -1,6 +1,5 @@
 package brainstormapps.venuekoi.ViewHolder;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +13,7 @@ import brainstormapps.venuekoi.R;
 public class VenueViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView txtVenueName;
+    public TextView txtVenuePrice;
     public ImageView imgVenue;
     private ItemClickListener itemClickListener;
 
@@ -22,7 +22,7 @@ public class VenueViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
         txtVenueName = itemView.findViewById(R.id.venue_name);
         imgVenue = itemView.findViewById(R.id.venue_image);
-        //Log.d("vfimg", txtVenueName+" item passed");
+        txtVenuePrice = itemView.findViewById(R.id.venue_price);
 
         itemView.setOnClickListener(this);
 
