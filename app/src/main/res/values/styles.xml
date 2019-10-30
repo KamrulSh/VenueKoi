@@ -23,12 +23,12 @@
     <style name="CollapsedAppBar" parent="@style/TextAppearance.AppCompat.Medium">
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/whiteText</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ExpandedAppBar" parent="@style/TextAppearance.MaterialComponents.Headline1">
-        <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/whiteText</item>
         <item name="android:textStyle">normal</item>
     </style>
 

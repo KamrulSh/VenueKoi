@@ -2,67 +2,100 @@ package brainstormapps.venuekoi;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.Toast;
-import androidx.annotation.Nullable;
+import android.util.Log;
+import android.view.View;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import java.util.Arrays;
-import java.util.List;
+import androidx.appcompat.widget.AppCompatButton;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int MY_REQUEST_CODE = 7772;
+    /*private static final int MY_REQUEST_CODE = 7772;
     List<AuthUI.IdpConfig> providers;
-    Button btnVenue;
+    Button btnVenue;*/
+
+    TextInputEditText editTextCountryCode, editTextPhone;
+    AppCompatButton buttonContinue;
+    private String phoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
 
-        btnVenue = findViewById(R.id.btn_veneu);
-        btnVenue.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), VenueListActivity.class);
-            startActivity(intent);
+        editTextCountryCode = findViewById(R.id.editTextCountryCode);
+        editTextPhone = findViewById(R.id.editTextPhone);
+        buttonContinue = findViewById(R.id.buttonContinue);
+
+        buttonContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String code = editTextCountryCode.getText().toString().trim();
+                String number = editTextPhone.getText().toString().trim();
+
+                if (number.isEmpty() || number.length() < 10) {
+                    editTextPhone.setError("Valid number is required");
+                    editTextPhone.requestFocus();
+                    return;
+                }
+
+                phoneNumber = code + number;
+
+                Log.i("phoneNo1", phoneNumber);
+
+                Intent intent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
+                intent.putExtra("userPhoneNumber", phoneNumber);
+                startActivity(intent);
+
+            }
         });
 
-        // init providers
-        providers = Arrays.asList(
-                new AuthUI.IdpConfig.PhoneBuilder().build(), // phone auth
-                new AuthUI.IdpConfig.EmailBuilder().build(), // email auth
-                new AuthUI.IdpConfig.GoogleBuilder().build() // gmail auth
-        );
-
-        showSignInOptions();
     }
 
-    private void showSignInOptions() {
-        startActivityForResult(
-                AuthUI.getInstance().createSignInIntentBuilder()
-                .setAvailableProviders(providers).setIsSmartLockEnabled(false)
-                .setTheme(R.style.MyTheme)
-                .build(), MY_REQUEST_CODE
-        );
-    }
-
+    // this method will run if user have not pressed log out button or user has been in login state
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == MY_REQUEST_CODE) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-            if (resultCode == RESULT_OK) {
-                // get user
-                //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Toast.makeText(this, "You have logged in.", Toast.LENGTH_SHORT).show();
-                //btnSignOut.setEnabled(true);
-            } else {
-                //Objects.requireNonNull(response);
-                //Objects.requireNonNull(response.getError());
-                Toast.makeText(this, "Error! "+response.getError().getMessage(), Toast.LENGTH_SHORT).show();
-            }
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+
+            String currentUserPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+            Log.d("phoneNo2", currentUserPhone);
+            DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
+
+            postReference.orderByChild("phone").equalTo(currentUserPhone)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                Log.d("phoneNo3", currentUserPhone);
+                                Intent intent = new Intent(MainActivity.this, VenueListActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            } else {
+                                Log.d("phoneNo4", currentUserPhone);
+                                Intent intent = new Intent(MainActivity.this, SetUserDataActivity.class);
+                                intent.putExtra("userPhoneNumber", currentUserPhone);
+                                startActivity(intent);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d("phoneNo5", currentUserPhone);
+                        }
+                    });
         }
+
     }
 
 }

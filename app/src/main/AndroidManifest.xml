@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".VenueDetailsActivity"></activity>
+        <activity android:name=".SetUserDataActivity"></activity>
+        <activity android:name=".VerifyPhoneActivity" />
+        <activity android:name=".VenueDetailsActivity" />
         <activity
             android:name=".ProfileActivity"
             android:label="Profile"

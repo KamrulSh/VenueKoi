@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -69,10 +71,6 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
             protected void populateViewHolder(VenueViewHolder venueViewHolder, Venue venue, int i) {
                 venueViewHolder.txtVenueName.setText(venue.getName());
                 Picasso.get().load(venue.getImage()).into(venueViewHolder.imgVenue);
-                //Log.d("fimg", venue.getName()+" item passed");
-
-                /*venueViewHolder.setItemClickListener((view, position, isLongClick) -> Toast.makeText(
-                        VenueListActivity.this, ""+ venue.getName(), Toast.LENGTH_SHORT).show());*/
 
                 // send venue id to venue details activity for showing details
                 venueViewHolder.setItemClickListener((view, position, isLongClick) -> {
@@ -110,10 +108,22 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
 
         switch (id) {
             case R.id.nav_bookedItem:
+                intent = new Intent(this, ProfileActivity.class);
+                break;
 
             case R.id.nav_venueList:
+                intent = new Intent(this, VenueListActivity.class);
+                break;
 
             case R.id.nav_logout:
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (firebaseUser != null) {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intentLogOut = new Intent(VenueListActivity.this, MainActivity.class);
+                    startActivity(intentLogOut);
+                    finish();
+                }
+                break;
 
             case R.id.nav_profile:
                 intent = new Intent(this, ProfileActivity.class);

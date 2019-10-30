@@ -18,6 +18,14 @@
     <string name="profile">Profile</string>
     <string name="amenities">Amenities</string>
     <string name="details">Details</string>
+    <string name="enter_phone_number">Please enter your phone number</string>
+    <string name="continue_to_next">Continue to next</string>
+    <string name="waiting_for_the_verification_code">Waiting for the verification code</string>
+    <string name="enter_verification_code">enter verification code</string>
+    <string name="sign_in">Sign In</string>
+    <string name="enter_your_name">Enter your name:</string>
+    <string name="enter_your_address">Enter your address:</string>
+    <string name="save_and_continue">Save and Continue</string>
 
     <!--<string name="facebook_login">Facebook login</string>
     <string name="facebook_application_id">1236590283207982</string>

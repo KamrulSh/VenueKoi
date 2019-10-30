@@ -17,11 +17,5 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // btn click for logout
-        btnSignOut = findViewById(R.id.btn_sign_out);
-        btnSignOut.setOnClickListener(view -> AuthUI.getInstance()
-                .signOut(ProfileActivity.this)
-                .addOnCompleteListener(task -> btnSignOut.setEnabled(false))
-                .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show()));
     }
 }
