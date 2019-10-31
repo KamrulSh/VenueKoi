@@ -70,25 +70,32 @@ public class MainActivity extends AppCompatActivity {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
             String currentUserPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+            String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
             Log.d("phoneNo2", currentUserPhone);
+            Log.d("phoneNo2id", currentUid);
+
             DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
 
             final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
             progressDialog.setMessage("Please wait...");
             progressDialog.show();
 
-            postReference.orderByChild("phone").equalTo(currentUserPhone)
+            //postReference.orderByChild("phone").equalTo(currentUserPhone)
+            postReference.child(currentUid)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 Log.d("phoneNo3", currentUserPhone);
+                                Log.d("phoneNo3id", currentUid);
                                 progressDialog.dismiss();
                                 Intent intent = new Intent(MainActivity.this, VenueListActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             } else {
                                 Log.d("phoneNo4", currentUserPhone);
+                                Log.d("phoneNo4id", currentUid);
                                 progressDialog.dismiss();
                                 Intent intent = new Intent(MainActivity.this, SetUserDataActivity.class);
                                 intent.putExtra("userPhoneNumber", currentUserPhone);

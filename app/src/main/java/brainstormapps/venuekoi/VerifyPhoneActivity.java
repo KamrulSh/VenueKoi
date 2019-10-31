@@ -129,20 +129,27 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                         Log.d("findCode5", "task.isSuccessful:" + task);
 
                         String currentUserPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+                        String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
                         Log.d("phoneNo7", currentUserPhone);
+                        Log.d("phoneNo7id", currentUid);
+
                         DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
 
-                        postReference.orderByChild("phone").equalTo(currentUserPhone)
+                        //postReference.orderByChild("phone").equalTo(currentUserPhone)
+                        postReference.child(currentUid)
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()) {
                                             Log.d("phoneNo8", currentUserPhone);
+                                            Log.d("phoneNo8id", currentUid);
                                             Intent intent = new Intent(VerifyPhoneActivity.this, VenueListActivity.class);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
                                         } else {
                                             Log.d("phoneNo9", currentUserPhone);
+                                            Log.d("phoneNo9id", currentUid);
                                             Intent intent = new Intent(VerifyPhoneActivity.this, SetUserDataActivity.class);
                                             intent.putExtra("userPhoneNumber", currentUserPhone);
                                             startActivity(intent);

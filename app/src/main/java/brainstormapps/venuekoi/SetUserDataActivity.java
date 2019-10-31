@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import brainstormapps.venuekoi.Model.User;
@@ -42,9 +44,9 @@ public class SetUserDataActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
 
-        String name = userName.getText().toString();
+        String name = userName.getText().toString().trim();
         String phone = userPhone;
-        String address = userAddress.getText().toString();
+        String address = userAddress.getText().toString().trim();
 
         if (name.isEmpty()) {
             userName.setError("Please fill this field.");
@@ -54,9 +56,9 @@ public class SetUserDataActivity extends AppCompatActivity implements View.OnCli
             return;
         } else {
             // check for already existed user
-            if (TextUtils.isEmpty(userId)) {
+            //if (TextUtils.isEmpty(userId)) {
                 createUserData(phone, name, address);
-            }
+            //}
         }
 
         Intent intent = new Intent(SetUserDataActivity.this, VenueListActivity.class);
@@ -66,12 +68,18 @@ public class SetUserDataActivity extends AppCompatActivity implements View.OnCli
 
     private void createUserData(String phone, String name, String address) {
 
-        if (TextUtils.isEmpty(userId)) {
-            userId = userDatabaseReference.push().getKey();
-        }
+        String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        Log.d("phoneNo10id", currentUid);
+        //Log.d("cuid2", userId);
+
+        /*if (TextUtils.isEmpty(userId)) {
+            userId = userDatabaseReference.push().getKey();
+        }*/
+
+        //Log.d("cuid3", userId);
         User user = new User(name, phone, address);
-        userDatabaseReference.child(userId).setValue(user);
+        userDatabaseReference.child(currentUid).setValue(user);
     }
 
 }
