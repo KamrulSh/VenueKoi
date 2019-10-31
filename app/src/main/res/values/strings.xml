@@ -37,6 +37,9 @@
     <string name="verify">VERIFY</string>
     <string name="tk_100000">Tk. 100000</string>
     <string name="bdt">BDT.</string>
+    <string name="your_name">Your name:</string>
+    <string name="your_address">Your address:</string>
+    <string name="your_phone">Your phone:</string>
 
     <!--<string name="facebook_login">Facebook login</string>
     <string name="facebook_application_id">1236590283207982</string>
