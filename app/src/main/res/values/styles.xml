@@ -36,8 +36,4 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="AdidasFont">
-        <item name="android:fontFamily">@font/texgyre</item>
-    </style>
-
 </resources>

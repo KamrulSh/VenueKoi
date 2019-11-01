@@ -2,9 +2,11 @@ package brainstormapps.venuekoi;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +38,8 @@ public class VenueDetailsActivity extends AppCompatActivity {
         databaseX = FirebaseDatabase.getInstance();
         dbReferenceX = databaseX.getReference("VenueList");
 
+        Log.d("phoneNo12vid", "" + dbReferenceX);
+
         venueNameX = findViewById(R.id.venue_nameX);
         venueImageX = findViewById(R.id.venue_imageX);
         venuePriceX = findViewById(R.id.venue_priceX);
@@ -45,8 +49,13 @@ public class VenueDetailsActivity extends AppCompatActivity {
         collapsingToolbarX.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         collapsingToolbarX.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
+        Log.d("phoneNo13vid", "" + getIntent());
+
         if (getIntent() != null)
             venueIdX = getIntent().getStringExtra("VenueId");
+
+        Log.d("phoneNo14vid", venueIdX);
+
 
         if (!venueIdX.isEmpty()) {
             getDetailsVenue(venueIdX);
@@ -62,8 +71,9 @@ public class VenueDetailsActivity extends AppCompatActivity {
 
                 collapsingToolbarX.setTitle("VenueKoi");
 
-                /*Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), R.style.AdidasFont);
-                collapsingToolbarX.setExpandedTitleTextAppearance(typeface);*/
+                //Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), R.font.texgyre);
+                Typeface typeface = ResourcesCompat.getFont(VenueDetailsActivity.this, R.font.texgyre);
+                collapsingToolbarX.setCollapsedTitleTypeface(typeface);
                 // set image
                 Picasso.get().load(venue.getImage()).into(venueImageX);
                 venueNameX.setText(venue.getName());
