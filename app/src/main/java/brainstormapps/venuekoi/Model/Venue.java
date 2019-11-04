@@ -2,16 +2,25 @@ package brainstormapps.venuekoi.Model;
 
 public class Venue {
     private String Name, Price;
-    private String Image, Detail;
+    private String Image, Detail, Location;
 
     public Venue() {
     }
 
-    public Venue(String name, String price, String image, String detail) {
+    public Venue(String name, String price, String image, String detail, String location) {
         Name = name;
         Price = price;
         Image = image;
         Detail = detail;
+        Location = location;
+    }
+
+    public String getLocation() {
+        return Location;
+    }
+
+    public void setLocation(String location) {
+        Location = location;
     }
 
     public String getName() {

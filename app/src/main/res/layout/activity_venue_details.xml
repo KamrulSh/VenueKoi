@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -80,7 +81,6 @@
                     <LinearLayout
                         android:id="@+id/layout_priceX"
                         android:orientation="horizontal"
-                        android:padding="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -109,9 +109,49 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/layout_locationX"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            app:srcCompat="@drawable/ic_location"
+                            android:layout_weight="1"
+                            android:padding="3dp"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/venue_locationX"
+                            tools:text="Chittagong"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:padding="10dp"
+                            android:fontFamily="@font/texgyre"
+                            android:textColor="@color/blackColor"
+                            android:layout_weight="9"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
+
+                        </TextView>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/venue_availableBtnX"
+                android:layout_margin="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/darkBlueColor"
+                android:text="@string/check_availability"
+                android:fontFamily="@font/texgyre"
+                android:textColor="@color/whiteText" />
 
             <androidx.cardview.widget.CardView
                 app:cardElevation="5dp"

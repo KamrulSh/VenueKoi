@@ -1,14 +1,16 @@
 package brainstormapps.venuekoi;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
-
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -22,8 +24,9 @@ import brainstormapps.venuekoi.Model.Venue;
 
 public class VenueDetailsActivity extends AppCompatActivity {
 
-    TextView venueNameX, venuePriceX, venueDetailsX;
+    TextView venueNameX, venuePriceX, venueDetailsX, venueLocationX;
     ImageView venueImageX;
+    Button venueAvailableBtnX;
     CollapsingToolbarLayout collapsingToolbarX;
     String venueIdX = "";
     FirebaseDatabase databaseX;
@@ -44,6 +47,8 @@ public class VenueDetailsActivity extends AppCompatActivity {
         venueImageX = findViewById(R.id.venue_imageX);
         venuePriceX = findViewById(R.id.venue_priceX);
         venueDetailsX = findViewById(R.id.venue_detailsX);
+        venueLocationX = findViewById(R.id.venue_locationX);
+        venueAvailableBtnX = findViewById(R.id.venue_availableBtnX);
         collapsingToolbarX = findViewById(R.id.collapsingToolbarX);
 
         collapsingToolbarX.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
@@ -60,6 +65,12 @@ public class VenueDetailsActivity extends AppCompatActivity {
         if (!venueIdX.isEmpty()) {
             getDetailsVenue(venueIdX);
         }
+
+        venueAvailableBtnX.setOnClickListener(view -> {
+            Intent bookingIntent = new Intent(VenueDetailsActivity.this, VenueBookingActivity.class);
+            bookingIntent.putExtra("bookingVenueId", venueIdX);
+            startActivity(bookingIntent);
+        });
 
     }
 
@@ -79,6 +90,7 @@ public class VenueDetailsActivity extends AppCompatActivity {
                 venueNameX.setText(venue.getName());
                 venuePriceX.setText(venue.getPrice());
                 venueDetailsX.setText(venue.getDetail());
+                venueLocationX.setText(venue.getLocation());
             }
 
             @Override
