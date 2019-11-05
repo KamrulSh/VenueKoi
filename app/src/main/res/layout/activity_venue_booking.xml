@@ -43,5 +43,20 @@
         android:layout_height="wrap_content"
         android:padding="10dp"/>
 
+    <TextView
+        android:id="@+id/booking_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"/>
+
+    <Button
+        android:id="@+id/booking_confirmBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_booking"
+        android:textColor="@color/whiteText"
+        android:background="@color/colorPrimary"/>
+
+
 
 </LinearLayout>
