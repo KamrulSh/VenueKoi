@@ -67,7 +67,7 @@ public class VenueDetailsActivity extends AppCompatActivity {
         }
 
         venueAvailableBtnX.setOnClickListener(view -> {
-            Intent bookingIntent = new Intent(VenueDetailsActivity.this, VenueBookingActivity.class);
+            Intent bookingIntent = new Intent(VenueDetailsActivity.this, CalendarBookingActivity.class);
             bookingIntent.putExtra("bookingVenueId", venueIdX);
             startActivity(bookingIntent);
         });

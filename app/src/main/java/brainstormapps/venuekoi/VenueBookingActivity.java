@@ -1,14 +1,15 @@
 package brainstormapps.venuekoi;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,26 +18,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-
-import java.util.Calendar;
 
 import brainstormapps.venuekoi.Model.VenueRequest;
 
-public class VenueBookingActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class VenueBookingActivity extends AppCompatActivity {
 
     TextView bookingVenueId, bookingVenueName, bookingVenuePrice;
     TextView bookingUserId, bookingUserName, bookingUserPhone, bookingDate;
-    String currentVenueId, currentUserId, bookingId;
+    String currentVenueId, currentUserId, bookingId, currentBookingDate;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference userDbReference, venueDbReference, bookingRequestReference;
-    String user_name, user_phone, venue_name, venue_price, booking_date;
-    String set_user_name, set_user_phone, set_venue_name, set_venue_price, set_booking_date;
+    String user_name, user_phone, venue_name, venue_price;
+    String set_user_name, set_user_phone, set_venue_name, set_venue_price;
     Button bookingConfirmBtn;
 
-    DatePickerDialog datePickerDialog;
+    /*DatePickerDialog datePickerDialog;
     int year, month, day;
-    Calendar calendar;
+    Calendar calendar;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +52,9 @@ public class VenueBookingActivity extends AppCompatActivity implements DatePicke
 
         currentVenueId = getIntent().getStringExtra("bookingVenueId");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentBookingDate = getIntent().getStringExtra("selectedBookingDate");
 
-        calendar = Calendar.getInstance();
+        /*calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -74,19 +73,26 @@ public class VenueBookingActivity extends AppCompatActivity implements DatePicke
 
             datePickerDialog.setOnCancelListener(dialogInterface ->
                     Toast.makeText(VenueBookingActivity.this, "Please pick a date", Toast.LENGTH_SHORT).show());
-        });
+        });*/
 
         bookingConfirmBtn.setOnClickListener(view -> {
-            if (booking_date.isEmpty()) {
-                bookingDate.setError("Please choose a valid date.");
+            // set_user_name!=null || set_user_phone!=null || set_venue_name!=null || set_venue_price!=null || set_booking_date!=null
+            Log.d("phoneNo22date", currentBookingDate);
+            setBookingRequest(set_user_name, set_user_phone, set_venue_name, set_venue_price, currentBookingDate);
 
-            } else {
-                // set_user_name!=null || set_user_phone!=null || set_venue_name!=null || set_venue_price!=null || set_booking_date!=null
-                Log.d("phoneNo18btn", set_booking_date);
-                setBookingRequest(set_user_name, set_user_phone, set_venue_name, set_venue_price, set_booking_date);
-                Intent intent = new Intent(VenueBookingActivity.this, VenueListActivity.class);
-                startActivity(intent);
-            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(VenueBookingActivity.this);
+            builder.setTitle("Your Booking Status")
+                    .setMessage("Your booking is done. We'll contact with you within 5 minutes.")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(VenueBookingActivity.this, VenueListActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         });
 
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -96,6 +102,7 @@ public class VenueBookingActivity extends AppCompatActivity implements DatePicke
 
         bookingVenueId.setText(currentVenueId);
         bookingUserId.setText(currentUserId);
+        bookingDate.setText(currentBookingDate);
 
         userDbReference.child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -160,9 +167,9 @@ public class VenueBookingActivity extends AppCompatActivity implements DatePicke
         Log.d("phoneNo17u", set_user_phone);
     }
 
-    @Override
+    /*@Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         set_booking_date = dayOfMonth + "/" + monthOfYear + "/" + year;
         bookingDate.setText(set_booking_date);
-    }
+    }*/
 }
