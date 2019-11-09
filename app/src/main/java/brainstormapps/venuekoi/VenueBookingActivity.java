@@ -1,6 +1,5 @@
 package brainstormapps.venuekoi;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 import brainstormapps.venuekoi.Model.VenueRequest;
 
 public class VenueBookingActivity extends AppCompatActivity {
@@ -31,10 +32,6 @@ public class VenueBookingActivity extends AppCompatActivity {
     String user_name, user_phone, venue_name, venue_price;
     String set_user_name, set_user_phone, set_venue_name, set_venue_price;
     Button bookingConfirmBtn;
-
-    /*DatePickerDialog datePickerDialog;
-    int year, month, day;
-    Calendar calendar;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,27 +51,6 @@ public class VenueBookingActivity extends AppCompatActivity {
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         currentBookingDate = getIntent().getStringExtra("selectedBookingDate");
 
-        /*calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        bookingDate.setOnClickListener(view -> {
-            datePickerDialog = DatePickerDialog.newInstance(VenueBookingActivity.this, year, month, day);
-            datePickerDialog.show(getSupportFragmentManager(), "DatePickerDialog");
-
-            // setting minimum date to today date
-            Calendar minimum_date = Calendar.getInstance();
-            datePickerDialog.setMinDate(minimum_date);
-            // setting maximum date to 6 months
-            Calendar maximum_date = Calendar.getInstance();
-            maximum_date.set(Calendar.MONTH, month+6);
-            datePickerDialog.setMaxDate(maximum_date);
-
-            datePickerDialog.setOnCancelListener(dialogInterface ->
-                    Toast.makeText(VenueBookingActivity.this, "Please pick a date", Toast.LENGTH_SHORT).show());
-        });*/
-
         bookingConfirmBtn.setOnClickListener(view -> {
             // set_user_name!=null || set_user_phone!=null || set_venue_name!=null || set_venue_price!=null || set_booking_date!=null
             Log.d("phoneNo22date", currentBookingDate);
@@ -84,12 +60,9 @@ public class VenueBookingActivity extends AppCompatActivity {
             builder.setTitle("Your Booking Status")
                     .setMessage("Your booking is done. We'll contact with you within 5 minutes.")
                     .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(VenueBookingActivity.this, VenueListActivity.class);
-                            startActivity(intent);
-                        }
+                    .setPositiveButton("OK", (dialogInterface, i) -> {
+                        Intent intent = new Intent(VenueBookingActivity.this, VenueListActivity.class);
+                        startActivity(intent);
                     });
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
@@ -141,17 +114,13 @@ public class VenueBookingActivity extends AppCompatActivity {
     private void setBookingRequest(String set_user_name, String set_user_phone, String set_venue_name,
                                    String set_venue_price, String set_booking_date) {
         if (TextUtils.isEmpty(bookingId)) {
-            bookingId = bookingRequestReference.push().getKey();
+            Calendar calendarBookingId = Calendar.getInstance();
+            long bookingTime = calendarBookingId.getTimeInMillis();
+            bookingId = String.valueOf(bookingTime);
         }
         VenueRequest venueRequest = new VenueRequest(set_user_name, set_user_phone, set_venue_name, set_venue_price, set_booking_date);
         bookingRequestReference.child(bookingId).setValue(venueRequest);
     }
-
-    /*private void setBookingRequest(String currentUserIdStr, String venue_nameS, String venue_priceS,
-                                   String user_nameS, String user_phoneS) {
-        venue_nameS = venue_name;
-        Log.d("phoneNo19set", venue_name);
-    }*/
 
     private void sendVenueData(String venue_name, String venue_price) {
         set_venue_name = venue_name;
@@ -167,9 +136,4 @@ public class VenueBookingActivity extends AppCompatActivity {
         Log.d("phoneNo17u", set_user_phone);
     }
 
-    /*@Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        set_booking_date = dayOfMonth + "/" + monthOfYear + "/" + year;
-        bookingDate.setText(set_booking_date);
-    }*/
 }

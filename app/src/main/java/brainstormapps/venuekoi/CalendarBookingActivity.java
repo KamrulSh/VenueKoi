@@ -25,7 +25,8 @@ public class CalendarBookingActivity extends AppCompatActivity {
         mCalendarView = findViewById(R.id.calendar_view);
 
         minimum_date = Calendar.getInstance();
-        minimum_date.set(Calendar.DAY_OF_MONTH, minimum_date.getActualMinimum(Calendar.DAY_OF_MONTH));
+        int currentDay = minimum_date.get(Calendar.DATE);
+        minimum_date.set(Calendar.DATE, currentDay);
         long date = minimum_date.getTimeInMillis();
         mCalendarView.setMinDate(date);
 
