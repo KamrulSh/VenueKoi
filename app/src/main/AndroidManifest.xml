@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".CalendarBookingActivity"></activity>
+        <activity android:name=".PreviousBookedItem"></activity>
+        <activity android:name=".CalendarBookingActivity" />
         <activity android:name=".VenueBookingActivity" />
         <activity android:name=".SetUserDataActivity" />
         <activity android:name=".VerifyPhoneActivity" />

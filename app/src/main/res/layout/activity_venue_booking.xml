@@ -1,62 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp"
     tools:context=".VenueBookingActivity">
 
-    <TextView
-        android:id="@+id/booking_venueID"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/booking_venueName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        <TextView
+            android:text="@string/venue_id"
+            android:textSize="18sp"
+            android:textColor="@color/blackColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
 
-    <TextView
-        android:id="@+id/booking_venuePrice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        <TextView
+            android:id="@+id/booking_venueID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
 
-    <TextView
-        android:id="@+id/booking_userID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        <TextView
+            android:text="@string/venue_name"
+            android:textSize="18sp"
+            android:textColor="@color/blackColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
 
-    <TextView
-        android:id="@+id/booking_userName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        <TextView
+            android:id="@+id/booking_venueName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
 
-    <TextView
-        android:id="@+id/booking_userPhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        <TextView
+            android:text="@string/venue_price"
+            android:textSize="18sp"
+            android:textColor="@color/blackColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
 
-    <TextView
-        android:id="@+id/booking_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        <TextView
+            android:id="@+id/booking_venuePrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
 
-    <Button
-        android:id="@+id/booking_confirmBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/confirm_booking"
-        android:textColor="@color/whiteText"
-        android:background="@color/colorPrimary"/>
+        <TextView
+            android:text="@string/user_id"
+            android:textSize="18sp"
+            android:textColor="@color/blackColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
 
+        <TextView
+            android:id="@+id/booking_userID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
 
+        <TextView
+            android:text="@string/your_name"
+            android:textSize="18sp"
+            android:textColor="@color/blackColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/booking_userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+
+        <TextView
+            android:text="@string/your_phone"
+            android:textSize="18sp"
+            android:textColor="@color/blackColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+
+        <TextView
+            android:id="@+id/booking_userPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+
+        <TextView
+            android:text="@string/booking_date"
+            android:textSize="18sp"
+            android:textColor="@color/blackColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+
+        <TextView
+            android:id="@+id/booking_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+
+        <Button
+            android:id="@+id/booking_confirmBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/confirm_booking"
+            android:textSize="18sp"
+            android:textColor="@color/whiteText"
+            android:background="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+</ScrollView>

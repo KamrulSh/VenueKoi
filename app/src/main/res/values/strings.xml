@@ -43,7 +43,11 @@
     <string name="check_availability">Check Availability</string>
     <string name="confirm_booking">Confirm Booking</string>
     <string name="confirm_date">Please pick a Date for booking</string>
-
+    <string name="booking_date">Booking Date:</string>
+    <string name="venue_price">Venue Price:</string>
+    <string name="venue_name">Venue Name:</string>
+    <string name="venue_id">Venue Id:</string>
+    <string name="user_id">User Id:</string>
     <!--<string name="facebook_login">Facebook login</string>
     <string name="facebook_application_id">1236590283207982</string>
     <string name="facebook_login_protocol_scheme">fb1236590283207982</string>-->

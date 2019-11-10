@@ -216,7 +216,7 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
 
         switch (id) {
             case R.id.nav_bookedItem:
-                intent = new Intent(this, ProfileActivity.class);
+                intent = new Intent(this, PreviousBookedItem.class);
                 break;
 
             case R.id.nav_logout:
