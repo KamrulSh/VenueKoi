@@ -55,7 +55,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.1'
     implementation "com.github.mancj:MaterialSearchBar:0.7.1"
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 

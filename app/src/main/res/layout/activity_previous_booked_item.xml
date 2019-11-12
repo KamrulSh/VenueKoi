@@ -7,7 +7,6 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/booked_item_recycler"
-        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

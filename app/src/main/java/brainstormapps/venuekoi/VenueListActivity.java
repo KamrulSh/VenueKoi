@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -66,14 +65,11 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
         // init firebase
         database = FirebaseDatabase.getInstance();
         venueItemRef = database.getReference("VenueList");
-        //Log.d("ffimg", venueItemRef+" item passed");
         // load venue item
         recyclerVenue = findViewById(R.id.recycler_venueItem);
-        //Log.d("fffimg", recyclerVenue+" item passed");
         recyclerVenue.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerVenue.setLayoutManager(layoutManager);
-        //Log.d("fimg", "item passed");
         loadVenueItem();
 
         // search function
@@ -171,7 +167,6 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void loadVenueItem() {
-        //Log.d("fimg", "item passed");
         adapter = new FirebaseRecyclerAdapter<Venue, VenueViewHolder>(
                 Venue.class, R.layout.home_venue_item, VenueViewHolder.class, venueItemRef) {
             @Override
@@ -220,13 +215,10 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
                 break;
 
             case R.id.nav_logout:
-                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                if (firebaseUser != null) {
-                    FirebaseAuth.getInstance().signOut();
-                    Intent intentLogOut = new Intent(VenueListActivity.this, MainActivity.class);
-                    startActivity(intentLogOut);
-                    finish();
-                }
+                FirebaseAuth.getInstance().signOut();
+                Intent intentLogOut = new Intent(VenueListActivity.this, MainActivity.class);
+                intentLogOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intentLogOut);
                 break;
 
             case R.id.nav_profile:

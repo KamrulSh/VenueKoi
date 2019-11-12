@@ -58,10 +58,11 @@ public class VenueBookingActivity extends AppCompatActivity {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(VenueBookingActivity.this);
             builder.setTitle("Your Booking Status")
-                    .setMessage("Your booking is done. We'll contact with you within 5 minutes.")
+                    .setMessage("Your booking request is done. We'll contact with you within 5 minutes for further process.")
                     .setCancelable(false)
                     .setPositiveButton("OK", (dialogInterface, i) -> {
                         Intent intent = new Intent(VenueBookingActivity.this, VenueListActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     });
             AlertDialog alertDialog = builder.create();
@@ -118,7 +119,7 @@ public class VenueBookingActivity extends AppCompatActivity {
             long bookingTime = calendarBookingId.getTimeInMillis();
             bookingId = String.valueOf(bookingTime);
         }
-        VenueRequest venueRequest = new VenueRequest(set_user_name, set_user_phone, set_venue_name, set_venue_price, set_booking_date);
+        VenueRequest venueRequest = new VenueRequest(bookingId, set_user_name, set_user_phone, set_venue_name, set_venue_price, set_booking_date);
         bookingRequestReference.child(bookingId).setValue(venueRequest);
     }
 
