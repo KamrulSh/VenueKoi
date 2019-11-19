@@ -58,5 +58,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:20.0.1'
     implementation "com.github.mancj:MaterialSearchBar:0.7.1"
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
+    // spots alert
+    implementation 'com.github.d-max:spots-dialog:1.1@aar'
 
 }

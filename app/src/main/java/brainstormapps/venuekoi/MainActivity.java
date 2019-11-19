@@ -1,6 +1,6 @@
 package brainstormapps.venuekoi;
 
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,15 +18,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import dmax.dialog.SpotsDialog;
+
 public class MainActivity extends AppCompatActivity {
 
-    /*private static final int MY_REQUEST_CODE = 7772;
-    List<AuthUI.IdpConfig> providers;
-    Button btnVenue;*/
-
-    TextInputEditText editTextCountryCode, editTextPhone;
-    AppCompatButton buttonContinue;
+    private TextInputEditText editTextCountryCode, editTextPhone;
+    public AppCompatButton buttonContinue;
     private String phoneNumber;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         editTextCountryCode = findViewById(R.id.editTextCountryCode);
         editTextPhone = findViewById(R.id.editTextPhone);
         buttonContinue = findViewById(R.id.buttonContinue);
+
+        alertDialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
 
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.i("phoneNo1", phoneNumber);
 
+                alertDialog.show();
                 Intent intent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
                 intent.putExtra("userPhoneNumber", phoneNumber);
                 startActivity(intent);
@@ -77,9 +79,11 @@ public class MainActivity extends AppCompatActivity {
 
             DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
 
-            final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setMessage("Please wait...");
-            progressDialog.show();
+            //alertDialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
+
+            /*final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Please wait...");*/
+            alertDialog.show();
 
             //postReference.orderByChild("phone").equalTo(currentUserPhone)
             postReference.child(currentUid)
@@ -89,14 +93,14 @@ public class MainActivity extends AppCompatActivity {
                             if (dataSnapshot.exists()) {
                                 Log.d("phoneNo3", currentUserPhone);
                                 Log.d("phoneNo3id", currentUid);
-                                progressDialog.dismiss();
+                                alertDialog.dismiss();
                                 Intent intent = new Intent(MainActivity.this, VenueListActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             } else {
                                 Log.d("phoneNo4", currentUserPhone);
                                 Log.d("phoneNo4id", currentUid);
-                                progressDialog.dismiss();
+                                alertDialog.dismiss();
                                 Intent intent = new Intent(MainActivity.this, SetUserDataActivity.class);
                                 intent.putExtra("userPhoneNumber", currentUserPhone);
                                 startActivity(intent);

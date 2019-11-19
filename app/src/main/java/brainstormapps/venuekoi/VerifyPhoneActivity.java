@@ -1,14 +1,16 @@
 package brainstormapps.venuekoi;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
@@ -25,15 +27,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.concurrent.TimeUnit;
+
+import dmax.dialog.SpotsDialog;
 
 public class VerifyPhoneActivity extends AppCompatActivity {
 
     private String verificationId;
     public String phoneNumber;
     private FirebaseAuth mAuth;
+    private AlertDialog alertDialog;
 
-    ProgressBar progressBar;
     TextInputEditText editText;
     AppCompatButton buttonSignIn;
 
@@ -50,6 +55,8 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         phoneNumber = getIntent().getStringExtra("userPhoneNumber");
         Log.i("phoneNo6", phoneNumber);
 
+        alertDialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
+        alertDialog.show();
 
         sendVerificationCode(phoneNumber);
 
@@ -66,6 +73,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     return;
                 }
 
+                alertDialog.show();
                 //verifying the code entered manually
                 verifyVerificationCode(code);
 
@@ -75,7 +83,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     }
 
     private void sendVerificationCode(String number) {
-
+        Log.d("phoneNofindCode0", "" + number);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 number,
                 60,
@@ -90,22 +98,23 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         @Override
         public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
 
-            Log.d("findCode0", "onVerificationCompleted:" + phoneAuthCredential);
+            Log.d("phoneNofindCode00", "onVerificationCompleted:" + phoneAuthCredential);
             signInWithPhoneAuthCredential(phoneAuthCredential);
         }
 
         @Override
         public void onVerificationFailed(@NonNull FirebaseException e) {
-            Log.e("findCode1", "onVerificationFailed:", e);
+            Log.e("phoneNofindCode1", "onVerificationFailed:", e);
             Toast.makeText(VerifyPhoneActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
-            Log.d("findCode2", "onCodeSent:" + verificationId);
+            Log.d("phoneNofindCode2", "onCodeSent:" + verificationId);
             //storing the verification id that is sent to the user
             verificationId = s;
+            alertDialog.dismiss();
         }
     };
 
@@ -113,20 +122,20 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private void verifyVerificationCode(String code) {
         //creating the credential
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-        Log.d("findCode3", "onVerifyVerificationCode:" + code);
+        Log.d("phoneNofindCode3", "onVerifyVerificationCode:" + code);
 
         //signing the user
         signInWithPhoneAuthCredential(credential);
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        Log.d("findCode4", "signInWithPhoneAuthCredential:" + credential);
+        Log.d("phoneNofindCode4", "signInWithPhoneAuthCredential:" + credential);
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(VerifyPhoneActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful() && FirebaseAuth.getInstance().getCurrentUser() != null) {
-                        Log.d("findCode5", "task.isSuccessful:" + task);
+                        Log.d("phoneNofindCode5", "task.isSuccessful:" + task);
 
                         String currentUserPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
                         String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -144,12 +153,14 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                         if (dataSnapshot.exists()) {
                                             Log.d("phoneNo8", currentUserPhone);
                                             Log.d("phoneNo8id", currentUid);
+                                            alertDialog.dismiss();
                                             Intent intent = new Intent(VerifyPhoneActivity.this, VenueListActivity.class);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
                                         } else {
                                             Log.d("phoneNo9", currentUserPhone);
                                             Log.d("phoneNo9id", currentUid);
+                                            alertDialog.dismiss();
                                             Intent intent = new Intent(VerifyPhoneActivity.this, SetUserDataActivity.class);
                                             intent.putExtra("userPhoneNumber", currentUserPhone);
                                             startActivity(intent);

@@ -14,12 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PreviousBookedItem"></activity>
+
         <activity android:name=".CalendarBookingActivity" />
         <activity android:name=".VenueBookingActivity" />
         <activity android:name=".SetUserDataActivity" />
         <activity android:name=".VerifyPhoneActivity" />
         <activity android:name=".VenueDetailsActivity" />
+        <activity
+            android:name=".PreviousBookedItem"
+            android:label="Previous Booking"
+            android:parentActivityName=".VenueListActivity"/>
         <activity
             android:name=".ProfileActivity"
             android:label="Profile"
