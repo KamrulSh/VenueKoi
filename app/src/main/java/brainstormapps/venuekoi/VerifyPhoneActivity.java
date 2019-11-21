@@ -4,20 +4,16 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -60,24 +56,17 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
         sendVerificationCode(phoneNumber);
 
-        buttonSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonSignIn.setOnClickListener(v -> {
 
-                String code = editText.getText().toString().trim();
-
-                if (code.isEmpty() || code.length() < 6) {
-
-                    editText.setError("Enter valid code.");
-                    editText.requestFocus();
-                    return;
-                }
-
-                alertDialog.show();
-                //verifying the code entered manually
-                verifyVerificationCode(code);
-
+            String code = editText.getText().toString().trim();
+            if (code.isEmpty() || code.length() < 6) {
+                editText.setError("Enter valid code.");
+                editText.requestFocus();
+                return;
             }
+            alertDialog.show();
+            //verifying the code entered manually
+            verifyVerificationCode(code);
         });
 
     }
@@ -131,72 +120,65 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         Log.d("phoneNofindCode4", "signInWithPhoneAuthCredential:" + credential);
         mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(VerifyPhoneActivity.this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful() && FirebaseAuth.getInstance().getCurrentUser() != null) {
-                        Log.d("phoneNofindCode5", "task.isSuccessful:" + task);
+            .addOnCompleteListener(VerifyPhoneActivity.this, task -> {
+                if (task.isSuccessful() && FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    Log.d("phoneNofindCode5", "task.isSuccessful:" + task);
 
-                        String currentUserPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
-                        String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String currentUserPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+                    String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                        Log.d("phoneNo7", currentUserPhone);
-                        Log.d("phoneNo7id", currentUid);
+                    Log.d("phoneNo7", currentUserPhone);
+                    Log.d("phoneNo7id", currentUid);
 
-                        DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
+                    DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
 
-                        //postReference.orderByChild("phone").equalTo(currentUserPhone)
-                        postReference.child(currentUid)
-                                .addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()) {
-                                            Log.d("phoneNo8", currentUserPhone);
-                                            Log.d("phoneNo8id", currentUid);
-                                            alertDialog.dismiss();
-                                            Intent intent = new Intent(VerifyPhoneActivity.this, VenueListActivity.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
-                                        } else {
-                                            Log.d("phoneNo9", currentUserPhone);
-                                            Log.d("phoneNo9id", currentUid);
-                                            alertDialog.dismiss();
-                                            Intent intent = new Intent(VerifyPhoneActivity.this, SetUserDataActivity.class);
-                                            intent.putExtra("userPhoneNumber", currentUserPhone);
-                                            startActivity(intent);
-                                        }
+                    postReference.child(currentUid)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        Log.d("phoneNo8", currentUserPhone);
+                                        Log.d("phoneNo8id", currentUid);
+                                        alertDialog.dismiss();
+                                        Intent intent = new Intent(VerifyPhoneActivity.this, VenueCategoryActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    } else {
+                                        Log.d("phoneNo9", currentUserPhone);
+                                        Log.d("phoneNo9id", currentUid);
+                                        alertDialog.dismiss();
+                                        Intent intent = new Intent(VerifyPhoneActivity.this, SetUserDataActivity.class);
+                                        intent.putExtra("userPhoneNumber", currentUserPhone);
+                                        startActivity(intent);
                                     }
+                                }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                    }
-                                });
-                        //verification successful we will start the SetUserDataActivity
-                        /*Intent intent = new Intent(VerifyPhoneActivity.this, SetUserDataActivity.class);
-                        intent.putExtra("userPhoneNumber", phoneNumber);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);*/
+                                }
+                            });
+                    //verification successful we will start the SetUserDataActivity
+                    /*Intent intent = new Intent(VerifyPhoneActivity.this, SetUserDataActivity.class);
+                    intent.putExtra("userPhoneNumber", phoneNumber);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);*/
 
-                    } else {
+                } else {
 
-                        //verification unsuccessful.. display an error message
+                    //verification unsuccessful.. display an error message
 
-                        String message = "Somthing is wrong, we will fix it soon...";
+                    String message = "Something is wrong, we will fix it soon...";
 
-                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                            message = "Invalid code entered...";
-                        }
-
-                        Snackbar snackbar = Snackbar.make(findViewById(R.id.parent), message, Snackbar.LENGTH_LONG);
-                        snackbar.setAction("Dismiss", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        });
-                        snackbar.show();
+                    if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                        message = "Invalid code entered...";
                     }
+
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.parent), message, Snackbar.LENGTH_LONG);
+                    snackbar.setAction("Dismiss", v -> {
+
+                    });
+                    snackbar.show();
                 }
             });
     }

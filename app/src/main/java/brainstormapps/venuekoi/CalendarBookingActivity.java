@@ -14,6 +14,7 @@ public class CalendarBookingActivity extends AppCompatActivity {
     CalendarView mCalendarView;
     String currentVenueId, getDate;
     Calendar minimum_date;
+    String categoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class CalendarBookingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar_booking);
 
         currentVenueId = getIntent().getStringExtra("bookingVenueId");
+        categoryName = getIntent().getStringExtra("CategoryName");
 
         mCalendarView = findViewById(R.id.calendar_view);
 
@@ -36,6 +38,7 @@ public class CalendarBookingActivity extends AppCompatActivity {
             Intent intent = new Intent(CalendarBookingActivity.this, VenueBookingActivity.class);
             intent.putExtra("selectedBookingDate", getDate);
             intent.putExtra("bookingVenueId", currentVenueId);
+            intent.putExtra("CategoryName", categoryName);
             startActivity(intent);
         });
     }

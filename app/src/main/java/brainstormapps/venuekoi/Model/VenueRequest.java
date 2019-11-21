@@ -1,18 +1,27 @@
 package brainstormapps.venuekoi.Model;
 
 public class VenueRequest {
-    private String BookingId, Uname, Uphone, Vname, Vprice, Bdate;
+    private String BookingId, Uname, Uphone, Vname, Vprice, Bdate, CatgName;
 
     public VenueRequest() {
     }
 
-    public VenueRequest(String bookingId, String uname, String uphone, String vname, String vprice, String bdate) {
+    public VenueRequest(String bookingId, String uname, String uphone, String vname, String vprice, String bdate, String bCategoryName) {
+        CatgName = bCategoryName;
         BookingId = bookingId;
         Uname = uname;
         Uphone = uphone;
         Vname = vname;
         Vprice = vprice;
         Bdate = bdate;
+    }
+
+    public String getCatgName() {
+        return CatgName;
+    }
+
+    public void setCatgName(String catgName) {
+        CatgName = catgName;
     }
 
     public String getBookingId() {

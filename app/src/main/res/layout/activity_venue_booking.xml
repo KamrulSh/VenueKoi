@@ -12,6 +12,20 @@
         android:orientation="vertical">
 
         <TextView
+            android:text="@string/category_name"
+            android:textSize="18sp"
+            android:textColor="@color/blackColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+
+        <TextView
+            android:id="@+id/booking_categoryName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+
+        <TextView
             android:text="@string/venue_id"
             android:textSize="18sp"
             android:textColor="@color/blackColor"

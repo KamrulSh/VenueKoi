@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import brainstormapps.venuekoi.Model.Venue;
+import brainstormapps.venuekoi.Model.VenueModel;
 
 public class VenueDetailsActivity extends AppCompatActivity {
 
@@ -31,6 +31,7 @@ public class VenueDetailsActivity extends AppCompatActivity {
     String venueIdX = "";
     FirebaseDatabase databaseX;
     DatabaseReference dbReferenceX;
+    String categoryNameX = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,10 @@ public class VenueDetailsActivity extends AppCompatActivity {
 
         Log.d("phoneNo13vid", "" + getIntent());
 
-        if (getIntent() != null)
+        if (getIntent() != null) {
             venueIdX = getIntent().getStringExtra("VenueId");
+            categoryNameX = getIntent().getStringExtra("CategoryName");
+        }
 
         Log.d("phoneNo14vid", venueIdX);
 
@@ -69,6 +72,7 @@ public class VenueDetailsActivity extends AppCompatActivity {
         venueAvailableBtnX.setOnClickListener(view -> {
             Intent bookingIntent = new Intent(VenueDetailsActivity.this, CalendarBookingActivity.class);
             bookingIntent.putExtra("bookingVenueId", venueIdX);
+            bookingIntent.putExtra("CategoryName", categoryNameX);
             startActivity(bookingIntent);
         });
 
@@ -78,7 +82,7 @@ public class VenueDetailsActivity extends AppCompatActivity {
         dbReferenceX.child(venueIdX).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Venue venue = dataSnapshot.getValue(Venue.class);
+                VenueModel venueModel = dataSnapshot.getValue(VenueModel.class);
 
                 collapsingToolbarX.setTitle("VenueKoi");
 
@@ -86,11 +90,11 @@ public class VenueDetailsActivity extends AppCompatActivity {
                 Typeface typeface = ResourcesCompat.getFont(VenueDetailsActivity.this, R.font.texgyre);
                 collapsingToolbarX.setCollapsedTitleTypeface(typeface);
                 // set image
-                Picasso.get().load(venue.getImage()).into(venueImageX);
-                venueNameX.setText(venue.getName());
-                venuePriceX.setText(venue.getPrice());
-                venueDetailsX.setText(venue.getDetail());
-                venueLocationX.setText(venue.getLocation());
+                Picasso.get().load(venueModel.getImage()).into(venueImageX);
+                venueNameX.setText(venueModel.getName());
+                venuePriceX.setText(venueModel.getPrice());
+                venueDetailsX.setText(venueModel.getDetail());
+                venueLocationX.setText(venueModel.getLocation());
             }
 
             @Override

@@ -51,6 +51,7 @@ public class PreviousBookedItem extends AppCompatActivity {
             @Override
             protected void populateViewHolder(BookedItemHolder bookedItemHolder, VenueRequest venueRequest, int i) {
                 bookedItemHolder.fetchBookingDate.setText(venueRequest.getBdate());
+                bookedItemHolder.fetchCategoryName.setText(venueRequest.getCatgName());
                 bookedItemHolder.fetchVenueName.setText(venueRequest.getVname());
                 bookedItemHolder.fetchVenuePrice.setText(venueRequest.getVprice());
                 bookedItemHolder.fetchBookingId.setText(venueRequest.getBookingId());

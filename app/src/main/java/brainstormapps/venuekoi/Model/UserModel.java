@@ -1,13 +1,13 @@
 package brainstormapps.venuekoi.Model;
 
-public class User {
+public class UserModel {
 
     private String Name, Phone, Address;
 
-    public User() {
+    public UserModel() {
     }
 
-    public User(String name, String phone, String address) {
+    public UserModel(String name, String phone, String address) {
         Name = name;
         Phone = phone;
         Address = address;

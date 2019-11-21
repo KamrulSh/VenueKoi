@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,28 +38,25 @@ public class MainActivity extends AppCompatActivity {
 
         alertDialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
 
-        buttonContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String code = editTextCountryCode.getText().toString().trim();
-                String number = editTextPhone.getText().toString().trim();
+        buttonContinue.setOnClickListener(v -> {
+            String code = editTextCountryCode.getText().toString().trim();
+            String number = editTextPhone.getText().toString().trim();
 
-                if (number.isEmpty() || number.length() < 10) {
-                    editTextPhone.setError("Valid number is required");
-                    editTextPhone.requestFocus();
-                    return;
-                }
-
-                phoneNumber = code + number;
-
-                Log.i("phoneNo1", phoneNumber);
-
-                alertDialog.show();
-                Intent intent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
-                intent.putExtra("userPhoneNumber", phoneNumber);
-                startActivity(intent);
-
+            if (number.isEmpty() || number.length() < 10) {
+                editTextPhone.setError("Valid number is required");
+                editTextPhone.requestFocus();
+                return;
             }
+
+            phoneNumber = code + number;
+
+            Log.i("phoneNo1", phoneNumber);
+
+            alertDialog.show();
+            Intent intent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
+            intent.putExtra("userPhoneNumber", phoneNumber);
+            startActivity(intent);
+
         });
 
     }
@@ -94,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d("phoneNo3", currentUserPhone);
                                 Log.d("phoneNo3id", currentUid);
                                 alertDialog.dismiss();
-                                Intent intent = new Intent(MainActivity.this, VenueListActivity.class);
+                                Intent intent = new Intent(MainActivity.this, VenueCategoryActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             } else {

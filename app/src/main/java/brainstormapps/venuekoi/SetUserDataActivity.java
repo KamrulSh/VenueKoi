@@ -2,7 +2,6 @@ package brainstormapps.venuekoi;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,13 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import brainstormapps.venuekoi.Model.User;
+import brainstormapps.venuekoi.Model.UserModel;
 
 public class SetUserDataActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button userSaveBtn;
     EditText userName, userAddress;
-    String userPhone, userId;
+    String userPhone;
     FirebaseDatabase userFirebaseDatabase;
     DatabaseReference userDatabaseReference;
 
@@ -61,7 +60,7 @@ public class SetUserDataActivity extends AppCompatActivity implements View.OnCli
             //}
         }
 
-        Intent intent = new Intent(SetUserDataActivity.this, VenueListActivity.class);
+        Intent intent = new Intent(SetUserDataActivity.this, VenueCategoryActivity.class);
         startActivity(intent);
 
     }
@@ -78,8 +77,8 @@ public class SetUserDataActivity extends AppCompatActivity implements View.OnCli
         }*/
 
         //Log.d("cuid3", userId);
-        User user = new User(name, phone, address);
-        userDatabaseReference.child(currentUid).setValue(user);
+        UserModel userModel = new UserModel(name, phone, address);
+        userDatabaseReference.child(currentUid).setValue(userModel);
     }
 
 }

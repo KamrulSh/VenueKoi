@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity android:name=".VenueListActivity"></activity>
         <activity android:name=".CalendarBookingActivity" />
         <activity android:name=".VenueBookingActivity" />
         <activity android:name=".SetUserDataActivity" />
@@ -23,13 +23,13 @@
         <activity
             android:name=".PreviousBookedItem"
             android:label="Previous Booking"
-            android:parentActivityName=".VenueListActivity"/>
+            android:parentActivityName=".VenueCategoryActivity" />
         <activity
             android:name=".ProfileActivity"
             android:label="Profile"
-            android:parentActivityName=".VenueListActivity" />
+            android:parentActivityName=".VenueCategoryActivity" />
         <activity
-            android:name=".VenueListActivity"
+            android:name=".VenueCategoryActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">

@@ -24,6 +24,7 @@ import brainstormapps.venuekoi.Model.VenueRequest;
 
 public class VenueBookingActivity extends AppCompatActivity {
 
+    TextView bookingCatgName;
     TextView bookingVenueId, bookingVenueName, bookingVenuePrice;
     TextView bookingUserId, bookingUserName, bookingUserPhone, bookingDate;
     String currentVenueId, currentUserId, bookingId, currentBookingDate;
@@ -32,12 +33,14 @@ public class VenueBookingActivity extends AppCompatActivity {
     String user_name, user_phone, venue_name, venue_price;
     String set_user_name, set_user_phone, set_venue_name, set_venue_price;
     Button bookingConfirmBtn;
+    String bCategoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venue_booking);
 
+        bookingCatgName = findViewById(R.id.booking_categoryName);
         bookingVenueId = findViewById(R.id.booking_venueID);
         bookingVenueName = findViewById(R.id.booking_venueName);
         bookingVenuePrice = findViewById(R.id.booking_venuePrice);
@@ -47,6 +50,7 @@ public class VenueBookingActivity extends AppCompatActivity {
         bookingDate = findViewById(R.id.booking_date);
         bookingConfirmBtn = findViewById(R.id.booking_confirmBtn);
 
+        bCategoryName = getIntent().getStringExtra("CategoryName");
         currentVenueId = getIntent().getStringExtra("bookingVenueId");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         currentBookingDate = getIntent().getStringExtra("selectedBookingDate");
@@ -54,14 +58,15 @@ public class VenueBookingActivity extends AppCompatActivity {
         bookingConfirmBtn.setOnClickListener(view -> {
             // set_user_name!=null || set_user_phone!=null || set_venue_name!=null || set_venue_price!=null || set_booking_date!=null
             Log.d("phoneNo22date", currentBookingDate);
-            setBookingRequest(set_user_name, set_user_phone, set_venue_name, set_venue_price, currentBookingDate);
+            setBookingRequest(set_user_name, set_user_phone, set_venue_name, set_venue_price,
+                    currentBookingDate, bCategoryName);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(VenueBookingActivity.this);
             builder.setTitle("Your Booking Status")
                     .setMessage("Your booking request is done. We'll contact with you within 5 minutes for further process.")
                     .setCancelable(false)
                     .setPositiveButton("OK", (dialogInterface, i) -> {
-                        Intent intent = new Intent(VenueBookingActivity.this, VenueListActivity.class);
+                        Intent intent = new Intent(VenueBookingActivity.this, VenueCategoryActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     });
@@ -77,6 +82,7 @@ public class VenueBookingActivity extends AppCompatActivity {
         bookingVenueId.setText(currentVenueId);
         bookingUserId.setText(currentUserId);
         bookingDate.setText(currentBookingDate);
+        bookingCatgName.setText(bCategoryName);
 
         userDbReference.child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -113,13 +119,14 @@ public class VenueBookingActivity extends AppCompatActivity {
     }
 
     private void setBookingRequest(String set_user_name, String set_user_phone, String set_venue_name,
-                                   String set_venue_price, String set_booking_date) {
+                                   String set_venue_price, String set_booking_date, String bCategoryName) {
         if (TextUtils.isEmpty(bookingId)) {
             Calendar calendarBookingId = Calendar.getInstance();
             long bookingTime = calendarBookingId.getTimeInMillis();
             bookingId = String.valueOf(bookingTime);
         }
-        VenueRequest venueRequest = new VenueRequest(bookingId, set_user_name, set_user_phone, set_venue_name, set_venue_price, set_booking_date);
+        VenueRequest venueRequest = new VenueRequest(bookingId, set_user_name, set_user_phone, set_venue_name,
+                set_venue_price, set_booking_date, bCategoryName);
         bookingRequestReference.child(bookingId).setValue(venueRequest);
     }
 

@@ -48,6 +48,7 @@
     <string name="venue_name">Venue Name:</string>
     <string name="venue_id">Venue Id:</string>
     <string name="user_id">User Id:</string>
+    <string name="category_name">Category Name:</string>
     <!--<string name="facebook_login">Facebook login</string>
     <string name="facebook_application_id">1236590283207982</string>
     <string name="facebook_login_protocol_scheme">fb1236590283207982</string>-->

@@ -4,21 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,37 +23,26 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import brainstormapps.venuekoi.Model.Venue;
+import brainstormapps.venuekoi.Model.VenueModel;
 import brainstormapps.venuekoi.ViewHolder.VenueViewHolder;
 
-public class VenueListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class VenueListActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference venueItemRef;
     RecyclerView recyclerVenue;
     RecyclerView.LayoutManager layoutManager;
-    FirebaseRecyclerAdapter<Venue, VenueViewHolder> adapter;
-
+    FirebaseRecyclerAdapter<VenueModel, VenueViewHolder> adapter;
     // search functionality
-    FirebaseRecyclerAdapter<Venue, VenueViewHolder> searchAdapter;
+    FirebaseRecyclerAdapter<VenueModel, VenueViewHolder> searchAdapter;
     List<String> suggestList = new ArrayList<>();
     MaterialSearchBar materialSearchBar;
+    String categoryId = "", categoryName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venue_list);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
 
         // init firebase
         database = FirebaseDatabase.getInstance();
@@ -70,7 +52,15 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
         recyclerVenue.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerVenue.setLayoutManager(layoutManager);
-        loadVenueItem();
+
+        // get intent here
+        if (getIntent() != null) {
+            categoryId = getIntent().getStringExtra("CategoryId");
+            categoryName = getIntent().getStringExtra("CategoryName");
+            Log.d("phoneNoCategoryName", categoryName);
+        }
+        if (!categoryId.isEmpty() && categoryId != null)
+            loadVenueListItem(categoryId, categoryName);
 
         // search function
         materialSearchBar = findViewById(R.id.venue_searchBar);
@@ -124,18 +114,42 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
 
     }
 
+    private void loadVenueListItem(String categoryId, String categoryName) {
+        adapter = new FirebaseRecyclerAdapter<VenueModel, VenueViewHolder>(
+                VenueModel.class, R.layout.custom_venue_item,
+                VenueViewHolder.class, venueItemRef.orderByChild("CatId").equalTo(categoryId)
+                // like SELECT * FROM VenueList WHERE catId = categoryId
+        ) {
+            @Override
+            protected void populateViewHolder(VenueViewHolder venueViewHolder, VenueModel venueModel, int i) {
+                venueViewHolder.txtVenueName.setText(venueModel.getName());
+                venueViewHolder.txtVenuePrice.setText(venueModel.getPrice());
+                Picasso.get().load(venueModel.getImage()).into(venueViewHolder.imgVenue);
+
+                // send venueModel id to venueModel details activity for showing details
+                venueViewHolder.setItemClickListener((view, position, isLongClick) -> {
+                    Intent venueIntent = new Intent(VenueListActivity.this, VenueDetailsActivity.class);
+                    venueIntent.putExtra("VenueId", adapter.getRef(position).getKey());
+                    venueIntent.putExtra("CategoryName", categoryName);
+                    startActivity(venueIntent);
+                });
+            }
+        };
+        recyclerVenue.setAdapter(adapter);
+    }
+
     private void startSearch(CharSequence text) {
-        searchAdapter = new FirebaseRecyclerAdapter<Venue, VenueViewHolder>(
-                Venue.class, R.layout.home_venue_item,
+        searchAdapter = new FirebaseRecyclerAdapter<VenueModel, VenueViewHolder>(
+                VenueModel.class, R.layout.custom_venue_item,
                 VenueViewHolder.class, venueItemRef.orderByChild("Name").equalTo(text.toString())) {
             @Override
-            protected void populateViewHolder(VenueViewHolder venueViewHolder, Venue venue, int i) {
+            protected void populateViewHolder(VenueViewHolder venueViewHolder, VenueModel venueModel, int i) {
 
-                venueViewHolder.txtVenueName.setText(venue.getName());
-                venueViewHolder.txtVenuePrice.setText(venue.getPrice());
-                Picasso.get().load(venue.getImage()).into(venueViewHolder.imgVenue);
+                venueViewHolder.txtVenueName.setText(venueModel.getName());
+                venueViewHolder.txtVenuePrice.setText(venueModel.getPrice());
+                Picasso.get().load(venueModel.getImage()).into(venueViewHolder.imgVenue);
 
-                // send venue id to venue details activity for showing details
+                // send venueModel id to venueModel details activity for showing details
                 venueViewHolder.setItemClickListener((view, position, isLongClick) -> {
                     Intent venueIntent = new Intent(VenueListActivity.this, VenueDetailsActivity.class);
                     venueIntent.putExtra("VenueId", searchAdapter.getRef(position).getKey());
@@ -153,8 +167,8 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot postDataSnapshot:dataSnapshot.getChildren()) {
-                    Venue venueItem = postDataSnapshot.getValue(Venue.class);
-                    suggestList.add(venueItem.getName()); // add name of venue to suggest list
+                    VenueModel venueModelItem = postDataSnapshot.getValue(VenueModel.class);
+                    suggestList.add(venueModelItem.getName()); // add name of venue to suggest list
                 }
 
             }
@@ -164,85 +178,6 @@ public class VenueListActivity extends AppCompatActivity implements NavigationVi
 
             }
         });
-    }
-
-    private void loadVenueItem() {
-        adapter = new FirebaseRecyclerAdapter<Venue, VenueViewHolder>(
-                Venue.class, R.layout.home_venue_item, VenueViewHolder.class, venueItemRef) {
-            @Override
-            protected void populateViewHolder(VenueViewHolder venueViewHolder, Venue venue, int i) {
-                venueViewHolder.txtVenueName.setText(venue.getName());
-                venueViewHolder.txtVenuePrice.setText(venue.getPrice());
-                Picasso.get().load(venue.getImage()).into(venueViewHolder.imgVenue);
-
-                // send venue id to venue details activity for showing details
-                venueViewHolder.setItemClickListener((view, position, isLongClick) -> {
-                    Intent venueIntent = new Intent(VenueListActivity.this, VenueDetailsActivity.class);
-                    venueIntent.putExtra("VenueId", adapter.getRef(position).getKey());
-                    startActivity(venueIntent);
-                });
-            }
-        };
-        recyclerVenue.setAdapter(adapter);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.venue, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-        int id = menuItem.getItemId();
-        Intent intent = null;
-
-        switch (id) {
-            case R.id.nav_bookedItem:
-                intent = new Intent(this, PreviousBookedItem.class);
-                break;
-
-            case R.id.nav_logout:
-                FirebaseAuth.getInstance().signOut();
-                Intent intentLogOut = new Intent(VenueListActivity.this, MainActivity.class);
-                intentLogOut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intentLogOut);
-                break;
-
-            case R.id.nav_profile:
-                intent = new Intent(this, ProfileActivity.class);
-                break;
-
-        }
-        startActivity(intent);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -19,6 +19,13 @@
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:id="@+id/fetch_category_name"
+            tools:text="Category Name"
+            android:textColor="@color/blackColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
             tools:text="Booking date"
             android:id="@+id/fetch_booking_date"
             android:textColor="@color/blackColor"
