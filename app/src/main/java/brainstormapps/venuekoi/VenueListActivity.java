@@ -153,6 +153,7 @@ public class VenueListActivity extends AppCompatActivity {
                 venueViewHolder.setItemClickListener((view, position, isLongClick) -> {
                     Intent venueIntent = new Intent(VenueListActivity.this, VenueDetailsActivity.class);
                     venueIntent.putExtra("VenueId", searchAdapter.getRef(position).getKey());
+                    venueIntent.putExtra("CategoryName", categoryName);
                     startActivity(venueIntent);
                 });
             }
@@ -162,7 +163,7 @@ public class VenueListActivity extends AppCompatActivity {
 
     private void loadSuggestion() {
 
-        venueItemRef.orderByChild("Name").addValueEventListener(new ValueEventListener() {
+        venueItemRef.orderByChild("CatId").equalTo(categoryId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 

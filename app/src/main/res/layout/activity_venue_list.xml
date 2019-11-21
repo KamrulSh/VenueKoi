@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        app:mt_hint="Search by venueModel name"
+        app:mt_hint="Search by venue name"
         app:mt_speechMode="false"/>
 
     <androidx.recyclerview.widget.RecyclerView
