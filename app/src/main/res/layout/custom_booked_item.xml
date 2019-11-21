@@ -19,6 +19,13 @@
             android:layout_height="wrap_content"/>
 
         <TextView
+            tools:text="Booking status"
+            android:id="@+id/fetch_booking_status"
+            android:textColor="@color/mdtp_accent_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
             android:id="@+id/fetch_category_name"
             tools:text="Category Name"
             android:textColor="@color/blackColor"

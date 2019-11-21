@@ -29,6 +29,7 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
 
     FirebaseDatabase database;
     DatabaseReference venueCatRef;
+    //String currentUserRef;
     RecyclerView recyclerVenueCat;
     RecyclerView.LayoutManager layoutManager;
     FirebaseRecyclerAdapter<CategoryModel, CategoryViewHolder> adapter;
@@ -50,9 +51,11 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // set name in navigation drawer header for current user
-        /*View headerView = navigationView.getHeaderView(0);
+        /*// set name in navigation drawer header for current user
+        // Common.currentUserModel.getName()
+        View headerView = navigationView.getHeaderView(0);
         userFullName = headerView.findViewById(R.id.header_fullName);
+        //currentUserRef = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         userFullName.setText(Common.currentUserModel.getName());*/
 
         // initialize firebase for category list

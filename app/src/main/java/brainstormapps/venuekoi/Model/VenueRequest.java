@@ -1,7 +1,7 @@
 package brainstormapps.venuekoi.Model;
 
 public class VenueRequest {
-    private String BookingId, Uname, Uphone, Vname, Vprice, Bdate, CatgName;
+    private String BookingId, Uname, Uphone, Vname, Vprice, Bdate, CatgName, Status;
 
     public VenueRequest() {
     }
@@ -14,6 +14,15 @@ public class VenueRequest {
         Vname = vname;
         Vprice = vprice;
         Bdate = bdate;
+        Status = "0";
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
     }
 
     public String getCatgName() {

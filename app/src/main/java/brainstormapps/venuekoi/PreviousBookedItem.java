@@ -1,6 +1,7 @@
 package brainstormapps.venuekoi;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,17 +38,17 @@ public class PreviousBookedItem extends AppCompatActivity {
         bookedRecyclerView.setHasFixedSize(true);
         bookedRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        retrieveBookedItem();
+        retrieveBookedItem(currentUserPhone);
     }
 
-    private void retrieveBookedItem() {
+    private void retrieveBookedItem(String phone) {
         bookedList.clear();
         firebaseDatabase = FirebaseDatabase.getInstance();
         bookedDbReference = firebaseDatabase.getReference().child("BookingRequest");
 
         bookedAdapter = new FirebaseRecyclerAdapter<VenueRequest, BookedItemHolder>(
-                VenueRequest.class, R.layout.booked_item_card,
-                BookedItemHolder.class, bookedDbReference.orderByChild("uphone").equalTo(currentUserPhone)) {
+                VenueRequest.class, R.layout.custom_booked_item,
+                BookedItemHolder.class, bookedDbReference.orderByChild("uphone").equalTo(phone)) {
             @Override
             protected void populateViewHolder(BookedItemHolder bookedItemHolder, VenueRequest venueRequest, int i) {
                 bookedItemHolder.fetchBookingDate.setText(venueRequest.getBdate());
@@ -55,8 +56,20 @@ public class PreviousBookedItem extends AppCompatActivity {
                 bookedItemHolder.fetchVenueName.setText(venueRequest.getVname());
                 bookedItemHolder.fetchVenuePrice.setText(venueRequest.getVprice());
                 bookedItemHolder.fetchBookingId.setText(venueRequest.getBookingId());
+                Log.d("phoneNoStatus0", venueRequest.getStatus());
+                bookedItemHolder.fetchBookingStatus.setText(convertRequestStatus(venueRequest.getStatus()));
             }
         };
         bookedRecyclerView.setAdapter(bookedAdapter);
+    }
+
+    private String convertRequestStatus(String status) {
+        Log.d("phoneNoStatus1", status);
+        if (status.equals("0"))
+            return "Placed";
+        else if (status.equals("1"))
+            return "Confirmed";
+        else
+            return "Payment Successful";
     }
 }

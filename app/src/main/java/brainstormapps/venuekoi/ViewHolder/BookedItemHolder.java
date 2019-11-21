@@ -15,6 +15,7 @@ public class BookedItemHolder extends RecyclerView.ViewHolder {
     public TextView fetchVenuePrice;
     public TextView fetchBookingDate;
     public TextView fetchCategoryName;
+    public TextView fetchBookingStatus;
 
     public BookedItemHolder(@NonNull View itemView) {
         super(itemView);
@@ -24,5 +25,6 @@ public class BookedItemHolder extends RecyclerView.ViewHolder {
         fetchVenueName = itemView.findViewById(R.id.fetch_venue_name);
         fetchVenuePrice = itemView.findViewById(R.id.fetch_venue_price);
         fetchCategoryName = itemView.findViewById(R.id.fetch_category_name);
+        fetchBookingStatus = itemView.findViewById(R.id.fetch_booking_status);
     }
 }
