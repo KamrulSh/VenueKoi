@@ -26,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
 
+import brainstormapps.venuekoi.Common.Common;
+import brainstormapps.venuekoi.Model.UserModel;
 import dmax.dialog.SpotsDialog;
 
 public class VerifyPhoneActivity extends AppCompatActivity {
@@ -100,10 +102,10 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         @Override
         public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
-            Log.d("phoneNofindCode2", "onCodeSent:" + verificationId);
             //storing the verification id that is sent to the user
             verificationId = s;
             alertDialog.dismiss();
+            Log.d("phoneNofindCode2", "onCodeSent:" + verificationId);
         }
     };
 
@@ -140,6 +142,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                         Log.d("phoneNo8", currentUserPhone);
                                         Log.d("phoneNo8id", currentUid);
                                         alertDialog.dismiss();
+                                        Common.currentUserModel = dataSnapshot.getValue(UserModel.class);
                                         Intent intent = new Intent(VerifyPhoneActivity.this, VenueCategoryActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
@@ -147,8 +150,10 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                         Log.d("phoneNo9", currentUserPhone);
                                         Log.d("phoneNo9id", currentUid);
                                         alertDialog.dismiss();
+                                        Common.currentUserModel = dataSnapshot.getValue(UserModel.class);
                                         Intent intent = new Intent(VerifyPhoneActivity.this, SetUserDataActivity.class);
                                         intent.putExtra("userPhoneNumber", currentUserPhone);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                     }
                                 }

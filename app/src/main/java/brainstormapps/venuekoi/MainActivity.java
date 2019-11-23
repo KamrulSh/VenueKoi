@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import brainstormapps.venuekoi.Common.Common;
+import brainstormapps.venuekoi.Model.UserModel;
 import dmax.dialog.SpotsDialog;
 
 public class MainActivity extends AppCompatActivity {
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d("phoneNo3", currentUserPhone);
                                 Log.d("phoneNo3id", currentUid);
                                 alertDialog.dismiss();
+                                Common.currentUserModel = dataSnapshot.getValue(UserModel.class);
                                 Intent intent = new Intent(MainActivity.this, VenueCategoryActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d("phoneNo4", currentUserPhone);
                                 Log.d("phoneNo4id", currentUid);
                                 alertDialog.dismiss();
+                                Common.currentUserModel = dataSnapshot.getValue(UserModel.class);
                                 Intent intent = new Intent(MainActivity.this, SetUserDataActivity.class);
                                 intent.putExtra("userPhoneNumber", currentUserPhone);
                                 startActivity(intent);

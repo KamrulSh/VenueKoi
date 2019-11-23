@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import brainstormapps.venuekoi.Common.Common;
 import brainstormapps.venuekoi.Model.CategoryModel;
 import brainstormapps.venuekoi.ViewHolder.CategoryViewHolder;
 
@@ -33,7 +36,7 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
     RecyclerView recyclerVenueCat;
     RecyclerView.LayoutManager layoutManager;
     FirebaseRecyclerAdapter<CategoryModel, CategoryViewHolder> adapter;
-    //TextView userFullName;
+    TextView userFullName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +54,12 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        /*// set name in navigation drawer header for current user
+        // set name in navigation drawer header for current user
         // Common.currentUserModel.getName()
         View headerView = navigationView.getHeaderView(0);
         userFullName = headerView.findViewById(R.id.header_fullName);
         //currentUserRef = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
-        userFullName.setText(Common.currentUserModel.getName());*/
+        userFullName.setText(Common.currentUserModel.getName());
 
         // initialize firebase for category list
         database = FirebaseDatabase.getInstance();
