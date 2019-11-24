@@ -26,12 +26,14 @@ public class CalendarBookingActivity extends AppCompatActivity {
 
         mCalendarView = findViewById(R.id.calendar_view);
 
+        // it will show the minimum data as today in calender
         minimum_date = Calendar.getInstance();
         int currentDay = minimum_date.get(Calendar.DATE);
         minimum_date.set(Calendar.DATE, currentDay);
         long date = minimum_date.getTimeInMillis();
         mCalendarView.setMinDate(date);
 
+        // when a date is selected it will go to the VenueBookingActivity
         mCalendarView.setOnDateChangeListener((calendarView, year, month, day) -> {
             getDate = day + "/" + (month+1) + "/" + year;
             Log.d("phoneNo21date", getDate);

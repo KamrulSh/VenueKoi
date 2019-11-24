@@ -7,19 +7,16 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
+import brainstormapps.venuekoi.Common.Common;
 import brainstormapps.venuekoi.Model.VenueRequest;
 
 public class VenueBookingActivity extends AppCompatActivity {
@@ -30,7 +27,6 @@ public class VenueBookingActivity extends AppCompatActivity {
     String currentVenueId, currentUserId, bookingId, currentBookingDate;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference userDbReference, venueDbReference, bookingRequestReference;
-    String user_name, user_phone, venue_name, venue_price;
     String set_user_name, set_user_phone, set_venue_name, set_venue_price;
     Button bookingConfirmBtn;
     String bCategoryName;
@@ -55,9 +51,35 @@ public class VenueBookingActivity extends AppCompatActivity {
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         currentBookingDate = getIntent().getStringExtra("selectedBookingDate");
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        userDbReference = firebaseDatabase.getReference().child("UserList");
+        venueDbReference = firebaseDatabase.getReference().child("VenueList");
+        bookingRequestReference = firebaseDatabase.getReference().child("BookingRequest");
+
+        bookingVenueId.setText(currentVenueId);
+        bookingUserId.setText(currentUserId);
+        bookingDate.setText(currentBookingDate);
+        bookingCatgName.setText(bCategoryName);
+        bookingVenueName.setText(Common.currentVenueModel.getName());
+        bookingVenuePrice.setText(Common.currentVenueModel.getPrice());
+        bookingUserName.setText(Common.currentUserModel.getName());
+        bookingUserPhone.setText(Common.currentUserModel.getPhone());
+
+        set_venue_name = Common.currentVenueModel.getName();
+        set_venue_price = Common.currentVenueModel.getPrice();
+        set_user_name = Common.currentUserModel.getName();
+        set_user_phone = Common.currentUserModel.getPhone();
+
+        // if booking Confirm Button is clicked it will show a dialog and then go to the VenueCategoryActivity
         bookingConfirmBtn.setOnClickListener(view -> {
-            // set_user_name!=null || set_user_phone!=null || set_venue_name!=null || set_venue_price!=null || set_booking_date!=null
-            Log.d("phoneNo22date", currentBookingDate);
+
+            Log.d("phoneNoCC1", set_user_name);
+            Log.d("phoneNoCC2", set_user_phone);
+            Log.d("phoneNoCC3", set_venue_name);
+            Log.d("phoneNoCC4", set_venue_price);
+            Log.d("phoneNoCC5", currentBookingDate);
+            Log.d("phoneNoCC6", bCategoryName);
+
             setBookingRequest(set_user_name, set_user_phone, set_venue_name, set_venue_price,
                     currentBookingDate, bCategoryName);
 
@@ -74,50 +96,9 @@ public class VenueBookingActivity extends AppCompatActivity {
             alertDialog.show();
         });
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        userDbReference = firebaseDatabase.getReference().child("UserList");
-        venueDbReference = firebaseDatabase.getReference().child("VenueList");
-        bookingRequestReference = firebaseDatabase.getReference().child("BookingRequest");
-
-        bookingVenueId.setText(currentVenueId);
-        bookingUserId.setText(currentUserId);
-        bookingDate.setText(currentBookingDate);
-        bookingCatgName.setText(bCategoryName);
-
-        userDbReference.child(currentUserId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                user_name = dataSnapshot.child("name").getValue().toString();
-                user_phone = dataSnapshot.child("phone").getValue().toString();
-                bookingUserName.setText(user_name);
-                bookingUserPhone.setText(user_phone);
-                sendUserData(user_name, user_phone);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        venueDbReference.child(currentVenueId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                venue_name = dataSnapshot.child("Name").getValue().toString();
-                venue_price = dataSnapshot.child("Price").getValue().toString();
-                bookingVenueName.setText(venue_name);
-                bookingVenuePrice.setText(venue_price);
-                sendVenueData(venue_name, venue_price);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
     }
 
+    // it will store booking request information in firebase database
     private void setBookingRequest(String set_user_name, String set_user_phone, String set_venue_name,
                                    String set_venue_price, String set_booking_date, String bCategoryName) {
         if (TextUtils.isEmpty(bookingId)) {
@@ -128,20 +109,6 @@ public class VenueBookingActivity extends AppCompatActivity {
         VenueRequest venueRequest = new VenueRequest(bookingId, set_user_name, set_user_phone, set_venue_name,
                 set_venue_price, set_booking_date, bCategoryName);
         bookingRequestReference.child(bookingId).setValue(venueRequest);
-    }
-
-    private void sendVenueData(String venue_name, String venue_price) {
-        set_venue_name = venue_name;
-        set_venue_price = venue_price;
-        Log.d("phoneNo16v", set_venue_name);
-        Log.d("phoneNo17v", set_venue_price);
-    }
-
-    private void sendUserData(String user_name, String user_phone) {
-        set_user_name = user_name;
-        set_user_phone = user_phone;
-        Log.d("phoneNo16u", set_user_name);
-        Log.d("phoneNo17u", set_user_phone);
     }
 
 }

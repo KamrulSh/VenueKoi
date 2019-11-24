@@ -32,7 +32,6 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
 
     FirebaseDatabase database;
     DatabaseReference venueCatRef;
-    //String currentUserRef;
     RecyclerView recyclerVenueCat;
     RecyclerView.LayoutManager layoutManager;
     FirebaseRecyclerAdapter<CategoryModel, CategoryViewHolder> adapter;
@@ -54,18 +53,15 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // set name in navigation drawer header for current user
-        // Common.currentUserModel.getName()
+        // set user name in navigation drawer header for current user
         View headerView = navigationView.getHeaderView(0);
         userFullName = headerView.findViewById(R.id.header_fullName);
-        //currentUserRef = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         userFullName.setText(Common.currentUserModel.getName());
 
         // initialize firebase for category list
         database = FirebaseDatabase.getInstance();
         venueCatRef = database.getReference("CategoryList");
 
-        // load VenueModel Category Item
         recyclerVenueCat = findViewById(R.id.recycler_venueCategory);
         recyclerVenueCat.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -75,6 +71,7 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
 
     }
 
+    // load Venue Category Item from firebase in recyclerView
     private void loadVenueCategoryItem() {
 
         adapter = new FirebaseRecyclerAdapter<CategoryModel, CategoryViewHolder>(
@@ -123,11 +120,12 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         int id = menuItem.getItemId();
-        Intent intent = null;
+        Intent intent;
 
         switch (id) {
             case R.id.nav_bookedItem:
                 intent = new Intent(this, PreviousBookedItem.class);
+                startActivity(intent);
                 break;
 
             case R.id.nav_logout:
@@ -139,10 +137,10 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
 
             case R.id.nav_profile:
                 intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
                 break;
 
         }
-        startActivity(intent);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

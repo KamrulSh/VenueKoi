@@ -54,29 +54,18 @@ public class SetUserDataActivity extends AppCompatActivity implements View.OnCli
             userAddress.setError("Please fill this field.");
             return;
         } else {
-            // check for already existed user
-            //if (TextUtils.isEmpty(userId)) {
-                createUserData(phone, name, address);
-            //}
+            createUserData(phone, name, address);
         }
 
         Intent intent = new Intent(SetUserDataActivity.this, VenueCategoryActivity.class);
         startActivity(intent);
-
     }
 
+    // store user data into firebase database
     private void createUserData(String phone, String name, String address) {
 
         String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         Log.d("phoneNo10id", currentUid);
-        //Log.d("cuid2", userId);
-
-        /*if (TextUtils.isEmpty(userId)) {
-            userId = userDatabaseReference.push().getKey();
-        }*/
-
-        //Log.d("cuid3", userId);
         UserModel userModel = new UserModel(name, phone, address);
         userDatabaseReference.child(currentUid).setValue(userModel);
     }

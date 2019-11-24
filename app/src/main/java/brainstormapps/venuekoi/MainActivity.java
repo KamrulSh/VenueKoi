@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,9 +52,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             phoneNumber = code + number;
-
             Log.i("phoneNo1", phoneNumber);
-
             alertDialog.show();
             Intent intent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
             intent.putExtra("userPhoneNumber", phoneNumber);
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // this method will run if user have not pressed log out button or user has been in login state
+    // this method will run at the beginning if user have not pressed log out button or user has been in login state
     @Override
     protected void onStart() {
         super.onStart();
@@ -76,14 +75,11 @@ public class MainActivity extends AppCompatActivity {
             Log.d("phoneNo2id", currentUid);
 
             DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
-
-            //alertDialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
-
-            /*final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setMessage("Please wait...");*/
             alertDialog.show();
 
-            //postReference.orderByChild("phone").equalTo(currentUserPhone)
+            // it will check if current User id is exist in database
+            // if exist it will run the first condition else 2nd condition
+
             postReference.child(currentUid)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -109,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Log.d("phoneNo5", currentUserPhone);
+                            Toast.makeText(MainActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }

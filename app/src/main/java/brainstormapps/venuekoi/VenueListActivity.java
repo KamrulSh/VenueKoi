@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +34,8 @@ public class VenueListActivity extends AppCompatActivity {
     RecyclerView recyclerVenue;
     RecyclerView.LayoutManager layoutManager;
     FirebaseRecyclerAdapter<VenueModel, VenueViewHolder> adapter;
-    // search functionality
+
+    // search adapter for search functionality
     FirebaseRecyclerAdapter<VenueModel, VenueViewHolder> searchAdapter;
     List<String> suggestList = new ArrayList<>();
     MaterialSearchBar materialSearchBar;
@@ -44,16 +46,16 @@ public class VenueListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venue_list);
 
-        // init firebase
+        // initialize firebase
         database = FirebaseDatabase.getInstance();
         venueItemRef = database.getReference("VenueList");
-        // load venue item
+        // load venue item in recyclerView
         recyclerVenue = findViewById(R.id.recycler_venueItem);
         recyclerVenue.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerVenue.setLayoutManager(layoutManager);
 
-        // get intent here
+        // get intent here from VenueCategoryActivity
         if (getIntent() != null) {
             categoryId = getIntent().getStringExtra("CategoryId");
             categoryName = getIntent().getStringExtra("CategoryName");
@@ -82,7 +84,6 @@ public class VenueListActivity extends AppCompatActivity {
                     if (search.toLowerCase().contains(materialSearchBar.getText().toLowerCase()))
                         suggest.add(search);
                 }
-
                 materialSearchBar.setLastSuggestions(suggest);
             }
 
@@ -114,6 +115,7 @@ public class VenueListActivity extends AppCompatActivity {
 
     }
 
+    // it will show venue list in recycler view
     private void loadVenueListItem(String categoryId, String categoryName) {
         adapter = new FirebaseRecyclerAdapter<VenueModel, VenueViewHolder>(
                 VenueModel.class, R.layout.custom_venue_item,
@@ -138,6 +140,7 @@ public class VenueListActivity extends AppCompatActivity {
         recyclerVenue.setAdapter(adapter);
     }
 
+    // when search btn is clicked it will show the desired search result
     private void startSearch(CharSequence text) {
         searchAdapter = new FirebaseRecyclerAdapter<VenueModel, VenueViewHolder>(
                 VenueModel.class, R.layout.custom_venue_item,
@@ -161,6 +164,7 @@ public class VenueListActivity extends AppCompatActivity {
         recyclerVenue.setAdapter(searchAdapter); // set adapter for Recycler view in search result
     }
 
+    // it will show the search suggestions when search option is clicked
     private void loadSuggestion() {
 
         venueItemRef.orderByChild("CatId").equalTo(categoryId).addValueEventListener(new ValueEventListener() {
@@ -171,12 +175,11 @@ public class VenueListActivity extends AppCompatActivity {
                     VenueModel venueModelItem = postDataSnapshot.getValue(VenueModel.class);
                     suggestList.add(venueModelItem.getName()); // add name of venue to suggest list
                 }
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(VenueListActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

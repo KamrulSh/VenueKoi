@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import brainstormapps.venuekoi.Common.Common;
 import brainstormapps.venuekoi.Model.VenueModel;
 
 public class VenueDetailsActivity extends AppCompatActivity {
@@ -57,6 +59,7 @@ public class VenueDetailsActivity extends AppCompatActivity {
 
         Log.d("phoneNo13vid", "" + getIntent());
 
+        // get Intent data from VenueListActivity
         if (getIntent() != null) {
             venueIdX = getIntent().getStringExtra("VenueId");
             categoryNameX = getIntent().getStringExtra("CategoryName");
@@ -64,11 +67,11 @@ public class VenueDetailsActivity extends AppCompatActivity {
 
         Log.d("phoneNo14vid", venueIdX);
 
-
         if (!venueIdX.isEmpty()) {
             getDetailsVenue(venueIdX);
         }
 
+        // when venue Available Button is clicked clicked it will go to CalendarBookingActivity
         venueAvailableBtnX.setOnClickListener(view -> {
             Intent bookingIntent = new Intent(VenueDetailsActivity.this, CalendarBookingActivity.class);
             bookingIntent.putExtra("bookingVenueId", venueIdX);
@@ -78,12 +81,13 @@ public class VenueDetailsActivity extends AppCompatActivity {
 
     }
 
+    // it will show the venue details of clicked item using that items venueId
     private void getDetailsVenue(String venueIdX) {
         dbReferenceX.child(venueIdX).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 VenueModel venueModel = dataSnapshot.getValue(VenueModel.class);
-
+                Common.currentVenueModel = dataSnapshot.getValue(VenueModel.class);
                 collapsingToolbarX.setTitle("VenueKoi");
 
                 //Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), R.font.texgyre);
@@ -99,7 +103,8 @@ public class VenueDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(VenueDetailsActivity.this,
+                        ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

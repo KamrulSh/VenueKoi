@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import brainstormapps.venuekoi.Common.Common;
 import brainstormapps.venuekoi.Model.VenueRequest;
 import brainstormapps.venuekoi.ViewHolder.BookedItemHolder;
 
@@ -32,7 +32,7 @@ public class PreviousBookedItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_previous_booked_item);
 
-        currentUserPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+        currentUserPhone = Common.currentUserModel.getPhone();
 
         bookedRecyclerView = findViewById(R.id.booked_item_recycler);
         bookedRecyclerView.setHasFixedSize(true);
@@ -41,6 +41,7 @@ public class PreviousBookedItem extends AppCompatActivity {
         retrieveBookedItem(currentUserPhone);
     }
 
+    // it will retrieve the previous booked item from firebase in recyclerView
     private void retrieveBookedItem(String phone) {
         bookedList.clear();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -56,13 +57,13 @@ public class PreviousBookedItem extends AppCompatActivity {
                 bookedItemHolder.fetchVenueName.setText(venueRequest.getVname());
                 bookedItemHolder.fetchVenuePrice.setText(venueRequest.getVprice());
                 bookedItemHolder.fetchBookingId.setText(venueRequest.getBookingId());
-                Log.d("phoneNoStatus0", venueRequest.getStatus());
                 bookedItemHolder.fetchBookingStatus.setText(convertRequestStatus(venueRequest.getStatus()));
             }
         };
         bookedRecyclerView.setAdapter(bookedAdapter);
     }
 
+    // it will convert Request Status from 0 => Placed, 1 => Confirmed, 2 => Payment Successful
     private String convertRequestStatus(String status) {
         Log.d("phoneNoStatus1", status);
         if (status.equals("0"))

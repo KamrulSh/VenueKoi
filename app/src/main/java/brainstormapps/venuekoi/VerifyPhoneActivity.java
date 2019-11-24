@@ -53,11 +53,14 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         phoneNumber = getIntent().getStringExtra("userPhoneNumber");
         Log.i("phoneNo6", phoneNumber);
 
+        // it will show the spots dialog before starting the verification process
         alertDialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
         alertDialog.show();
 
+        // a verification code will be sent to this phone number
         sendVerificationCode(phoneNumber);
 
+        // when button SignIn is clicked it will verify the verification code
         buttonSignIn.setOnClickListener(v -> {
 
             String code = editText.getText().toString().trim();
@@ -73,6 +76,8 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
     }
 
+    // send verification code to the entered number and wait for the callbacks to decide for
+    // sending new code after 60 seconds
     private void sendVerificationCode(String number) {
         Log.d("phoneNofindCode0", "" + number);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -85,6 +90,8 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     }
 
     // the callback to detect the verification status
+    // for new user phone number it will run onCodeSent method and send verification code
+    // for old user it will run onVerificationCompleted method
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         @Override
         public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
@@ -109,7 +116,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         }
     };
 
-
+    // it will check if verification code is matched with user verificationId
     private void verifyVerificationCode(String code) {
         //creating the credential
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
@@ -134,6 +141,9 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
                     DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
 
+                    // it will try to find if entered user phone number is already existed in the database
+                    // if exist then first condition will run
+                    // else 2nd condition will run
                     postReference.child(currentUid)
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -160,19 +170,13 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                    Toast.makeText(getApplicationContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
-                    //verification successful we will start the SetUserDataActivity
-                    /*Intent intent = new Intent(VerifyPhoneActivity.this, SetUserDataActivity.class);
-                    intent.putExtra("userPhoneNumber", phoneNumber);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);*/
 
                 } else {
 
                     //verification unsuccessful.. display an error message
-
                     String message = "Something is wrong, we will fix it soon...";
 
                     if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
