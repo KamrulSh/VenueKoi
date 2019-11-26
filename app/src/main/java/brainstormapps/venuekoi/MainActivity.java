@@ -42,22 +42,27 @@ public class MainActivity extends AppCompatActivity {
         alertDialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
 
         buttonContinue.setOnClickListener(v -> {
-            String code = editTextCountryCode.getText().toString().trim();
-            String number = editTextPhone.getText().toString().trim();
 
-            if (number.isEmpty() || number.length() < 10) {
-                editTextPhone.setError("Valid number is required");
-                editTextPhone.requestFocus();
-                return;
+            if (Common.isConnectedToInternet(getBaseContext())) {
+
+                String code = editTextCountryCode.getText().toString().trim();
+                String number = editTextPhone.getText().toString().trim();
+
+                if (number.isEmpty() || number.length() < 10) {
+                    editTextPhone.setError("Valid number is required");
+                    editTextPhone.requestFocus();
+                    return;
+                }
+
+                phoneNumber = code + number;
+                Log.i("phoneNo1", phoneNumber);
+                alertDialog.show();
+                Intent intent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
+                intent.putExtra("userPhoneNumber", phoneNumber);
+                startActivity(intent);
             }
-
-            phoneNumber = code + number;
-            Log.i("phoneNo1", phoneNumber);
-            alertDialog.show();
-            Intent intent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
-            intent.putExtra("userPhoneNumber", phoneNumber);
-            startActivity(intent);
-
+            else
+                Toast.makeText(this, "Please check internet connection.", Toast.LENGTH_LONG).show();
         });
 
     }
@@ -66,50 +71,52 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        if (Common.isConnectedToInternet(getBaseContext())) {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
-            String currentUserPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
-            String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String currentUserPhone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+                String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            Log.d("phoneNo2", currentUserPhone);
-            Log.d("phoneNo2id", currentUid);
+                Log.d("phoneNo2", currentUserPhone);
+                Log.d("phoneNo2id", currentUid);
 
-            DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
-            alertDialog.show();
+                DatabaseReference postReference = FirebaseDatabase.getInstance().getReference().child("UserList");
+                alertDialog.show();
 
-            // it will check if current User id is exist in database
-            // if exist it will run the first condition else 2nd condition
+                // it will check if current User id is exist in database
+                // if exist it will run the first condition else 2nd condition
 
-            postReference.child(currentUid)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                Log.d("phoneNo3", currentUserPhone);
-                                Log.d("phoneNo3id", currentUid);
-                                alertDialog.dismiss();
-                                Common.currentUserModel = dataSnapshot.getValue(UserModel.class);
-                                Intent intent = new Intent(MainActivity.this, VenueCategoryActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            } else {
-                                Log.d("phoneNo4", currentUserPhone);
-                                Log.d("phoneNo4id", currentUid);
-                                alertDialog.dismiss();
-                                Common.currentUserModel = dataSnapshot.getValue(UserModel.class);
-                                Intent intent = new Intent(MainActivity.this, SetUserDataActivity.class);
-                                intent.putExtra("userPhoneNumber", currentUserPhone);
-                                startActivity(intent);
+                postReference.child(currentUid)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    Log.d("phoneNo3", currentUserPhone);
+                                    Log.d("phoneNo3id", currentUid);
+                                    alertDialog.dismiss();
+                                    Common.currentUserModel = dataSnapshot.getValue(UserModel.class);
+                                    Intent intent = new Intent(MainActivity.this, VenueCategoryActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                } else {
+                                    Log.d("phoneNo4", currentUserPhone);
+                                    Log.d("phoneNo4id", currentUid);
+                                    alertDialog.dismiss();
+                                    Common.currentUserModel = dataSnapshot.getValue(UserModel.class);
+                                    Intent intent = new Intent(MainActivity.this, SetUserDataActivity.class);
+                                    intent.putExtra("userPhoneNumber", currentUserPhone);
+                                    startActivity(intent);
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Toast.makeText(MainActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Toast.makeText(MainActivity.this, "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
         }
-
+        else Toast.makeText(this, "Please check internet connection.", Toast.LENGTH_LONG).show();
     }
 
 }

@@ -67,16 +67,18 @@ public class VenueDetailsActivity extends AppCompatActivity {
 
         Log.d("phoneNo14vid", venueIdX);
 
-        if (!venueIdX.isEmpty()) {
+        if (!venueIdX.isEmpty())
             getDetailsVenue(venueIdX);
-        }
 
         // when venue Available Button is clicked clicked it will go to CalendarBookingActivity
         venueAvailableBtnX.setOnClickListener(view -> {
-            Intent bookingIntent = new Intent(VenueDetailsActivity.this, CalendarBookingActivity.class);
-            bookingIntent.putExtra("bookingVenueId", venueIdX);
-            bookingIntent.putExtra("CategoryName", categoryNameX);
-            startActivity(bookingIntent);
+            if (Common.isConnectedToInternet(getBaseContext())) {
+                Intent bookingIntent = new Intent(VenueDetailsActivity.this, CalendarBookingActivity.class);
+                bookingIntent.putExtra("bookingVenueId", venueIdX);
+                bookingIntent.putExtra("CategoryName", categoryNameX);
+                startActivity(bookingIntent);
+            } else
+                Toast.makeText(VenueDetailsActivity.this, "Please check internet connection.", Toast.LENGTH_LONG).show();
         });
 
     }

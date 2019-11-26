@@ -83,15 +83,18 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
                 categoryViewHolder.categoryName.setText(categoryModel.getName());
                 Picasso.get().load(categoryModel.getImage()).into(categoryViewHolder.categoryImage);
 
-                final CategoryModel clickItem = categoryModel;
+                //final CategoryModel clickItem = categoryModel;
                 categoryViewHolder.setItemClickListener((view, position, isLongClick) -> {
-                    Toast.makeText(VenueCategoryActivity.this, ""+clickItem.getName(), Toast.LENGTH_SHORT).show();
-                    // get CategoryId and send it to VenueListActivity
-                    Intent venueList = new Intent(VenueCategoryActivity.this, VenueListActivity.class);
-                    // as CategoryId is a key, so we need to get key of this item
-                    venueList.putExtra("CategoryId", adapter.getRef(position).getKey());
-                    venueList.putExtra("CategoryName", categoryModel.getName());
-                    startActivity(venueList);
+                    //Toast.makeText(VenueCategoryActivity.this, ""+clickItem.getName(), Toast.LENGTH_SHORT).show();
+                    if (Common.isConnectedToInternet(getBaseContext())) {
+                        // get CategoryId and send it to VenueListActivity
+                        Intent venueList = new Intent(VenueCategoryActivity.this, VenueListActivity.class);
+                        // as CategoryId is a key, so we need to get key of this item
+                        venueList.putExtra("CategoryId", adapter.getRef(position).getKey());
+                        venueList.putExtra("CategoryName", categoryModel.getName());
+                        startActivity(venueList);
+                    } else
+                        Toast.makeText(VenueCategoryActivity.this, "Please check internet connection.", Toast.LENGTH_LONG).show();
                 });
             }
         };

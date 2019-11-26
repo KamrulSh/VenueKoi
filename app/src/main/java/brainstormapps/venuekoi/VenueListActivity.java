@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import brainstormapps.venuekoi.Common.Common;
 import brainstormapps.venuekoi.Model.VenueModel;
 import brainstormapps.venuekoi.ViewHolder.VenueViewHolder;
 
@@ -130,10 +131,13 @@ public class VenueListActivity extends AppCompatActivity {
 
                 // send venueModel id to venueModel details activity for showing details
                 venueViewHolder.setItemClickListener((view, position, isLongClick) -> {
-                    Intent venueIntent = new Intent(VenueListActivity.this, VenueDetailsActivity.class);
-                    venueIntent.putExtra("VenueId", adapter.getRef(position).getKey());
-                    venueIntent.putExtra("CategoryName", categoryName);
-                    startActivity(venueIntent);
+                    if (Common.isConnectedToInternet(getBaseContext())) {
+                        Intent venueIntent = new Intent(VenueListActivity.this, VenueDetailsActivity.class);
+                        venueIntent.putExtra("VenueId", adapter.getRef(position).getKey());
+                        venueIntent.putExtra("CategoryName", categoryName);
+                        startActivity(venueIntent);
+                    } else
+                        Toast.makeText(VenueListActivity.this, "Please check internet connection.", Toast.LENGTH_LONG).show();
                 });
             }
         };
