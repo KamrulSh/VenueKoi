@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -64,7 +64,7 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
 
         recyclerVenueCat = findViewById(R.id.recycler_venueCategory);
         recyclerVenueCat.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new GridLayoutManager(this,2);
         recyclerVenueCat.setLayoutManager(layoutManager);
 
         loadVenueCategoryItem();

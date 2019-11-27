@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +42,7 @@ public class VenueListActivity extends AppCompatActivity {
     List<String> suggestList = new ArrayList<>();
     MaterialSearchBar materialSearchBar;
     String categoryId = "", categoryName = "";
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +58,31 @@ public class VenueListActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerVenue.setLayoutManager(layoutManager);
 
-        // get intent here from VenueCategoryActivity
-        if (getIntent() != null) {
-            categoryId = getIntent().getStringExtra("CategoryId");
-            categoryName = getIntent().getStringExtra("CategoryName");
-            Log.d("phoneNoCategoryName", categoryName);
-        }
-        if (!categoryId.isEmpty() && categoryId != null)
-            loadVenueListItem(categoryId, categoryName);
+        // swipe refresh layout
+        swipeRefreshLayout = findViewById(R.id.swipeRefresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                R.color.darkBlueColor, R.color.mdtp_accent_color);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // get intent here from VenueCategoryActivity
+            if (getIntent() != null) {
+                categoryId = getIntent().getStringExtra("CategoryId");
+                categoryName = getIntent().getStringExtra("CategoryName");
+                Log.d("phoneNoCategoryName", categoryName);
+            }
+            if (!categoryId.isEmpty() && categoryId != null)
+                loadVenueListItem(categoryId, categoryName);
+        });
+
+        swipeRefreshLayout.post(() -> {
+            // get intent here from VenueCategoryActivity
+            if (getIntent() != null) {
+                categoryId = getIntent().getStringExtra("CategoryId");
+                categoryName = getIntent().getStringExtra("CategoryName");
+                Log.d("phoneNoCategoryName", categoryName);
+            }
+            if (!categoryId.isEmpty() && categoryId != null)
+                loadVenueListItem(categoryId, categoryName);
+        });
 
         // search function
         materialSearchBar = findViewById(R.id.venue_searchBar);
@@ -142,6 +161,7 @@ public class VenueListActivity extends AppCompatActivity {
             }
         };
         recyclerVenue.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     // when search btn is clicked it will show the desired search result
