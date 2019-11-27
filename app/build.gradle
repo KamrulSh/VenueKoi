@@ -60,5 +60,6 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
     // spots alert
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
-
+    // rating
+    implementation 'com.stepstone.apprating:app-rating:2.3.1'
 }

@@ -42,6 +42,18 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/rating_btnX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_star_rating"
+        app:backgroundTint="@color/whiteText"
+        app:elevation="6dp"
+        app:pressedTranslationZ="1dp"
+        app:layout_anchor="@id/appbar_layoutX"
+        app:layout_anchorGravity="bottom|right|end"
+        app:useCompatPadding="true" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scrollX"
         android:clipToPadding="false"
@@ -152,6 +164,39 @@
                 android:text="@string/check_availability"
                 android:fontFamily="@font/texgyre"
                 android:textColor="@color/whiteText" />
+
+            <androidx.cardview.widget.CardView
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RatingBar
+                        android:id="@+id/rating_barX"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:rating="0"
+                        android:max="5"
+                        android:layout_gravity="center"
+                        android:isIndicator="true"/>
+
+                    <Button
+                        android:id="@+id/venue_commentX"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:fontFamily="@font/texgyre"
+                        android:textColor="@color/whiteText"
+                        android:text="@string/show_comment" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 app:cardElevation="5dp"

@@ -155,9 +155,8 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
+        if (id == R.id.action_refresh) {
+            loadVenueCategoryItem();
         }
         return super.onOptionsItemSelected(item);
     }
