@@ -2,9 +2,11 @@ package brainstormapps.venuekoi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -74,12 +77,13 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
     // load Venue Category Item from firebase in recyclerView
     private void loadVenueCategoryItem() {
 
-        adapter = new FirebaseRecyclerAdapter<CategoryModel, CategoryViewHolder>(
-                CategoryModel.class, R.layout.custom_category_item,
-                CategoryViewHolder.class, venueCatRef
-        ) {
+        FirebaseRecyclerOptions<CategoryModel> recyclerOptions = new FirebaseRecyclerOptions.Builder<CategoryModel>()
+                .setQuery(venueCatRef, CategoryModel.class)
+                .build();
+
+        adapter = new FirebaseRecyclerAdapter<CategoryModel, CategoryViewHolder>(recyclerOptions) {
             @Override
-            protected void populateViewHolder(CategoryViewHolder categoryViewHolder, CategoryModel categoryModel, int i) {
+            protected void onBindViewHolder(@NonNull CategoryViewHolder categoryViewHolder, int i, @NonNull CategoryModel categoryModel) {
                 categoryViewHolder.categoryName.setText(categoryModel.getName());
                 Picasso.get().load(categoryModel.getImage()).into(categoryViewHolder.categoryImage);
 
@@ -97,10 +101,22 @@ public class VenueCategoryActivity extends AppCompatActivity implements Navigati
                         Toast.makeText(VenueCategoryActivity.this, "Please check internet connection.", Toast.LENGTH_LONG).show();
                 });
             }
+
+            @NonNull
+            @Override
+            public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_category_item, parent, false);
+                return new CategoryViewHolder(itemView);
+            }
         };
+        adapter.startListening();
         recyclerVenueCat.setAdapter(adapter);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
     @Override
     public void onBackPressed() {

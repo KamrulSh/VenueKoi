@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,10 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.squareup.picasso.Picasso;
@@ -57,6 +62,7 @@ public class VenueListActivity extends AppCompatActivity {
         recyclerVenue.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerVenue.setLayoutManager(layoutManager);
+        materialSearchBar = findViewById(R.id.venue_searchBar);
 
         // swipe refresh layout
         swipeRefreshLayout = findViewById(R.id.swipeRefresh_layout);
@@ -69,8 +75,9 @@ public class VenueListActivity extends AppCompatActivity {
                 categoryName = getIntent().getStringExtra("CategoryName");
                 Log.d("phoneNoCategoryName", categoryName);
             }
-            if (!categoryId.isEmpty() && categoryId != null)
+            if (!categoryId.isEmpty() && categoryId != null) {
                 loadVenueListItem(categoryId, categoryName);
+            }
         });
 
         swipeRefreshLayout.post(() -> {
@@ -80,12 +87,15 @@ public class VenueListActivity extends AppCompatActivity {
                 categoryName = getIntent().getStringExtra("CategoryName");
                 Log.d("phoneNoCategoryName", categoryName);
             }
-            if (!categoryId.isEmpty() && categoryId != null)
+            if (!categoryId.isEmpty() && categoryId != null) {
                 loadVenueListItem(categoryId, categoryName);
+                searchAfterText();
+            }
         });
+    }
 
-        // search function
-        materialSearchBar = findViewById(R.id.venue_searchBar);
+    // search function
+    private void searchAfterText() {
         loadSuggestion();
         materialSearchBar.setLastSuggestions(suggestList);
         materialSearchBar.setCardViewElevation(10);
@@ -132,18 +142,20 @@ public class VenueListActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     // it will show venue list in recycler view
     private void loadVenueListItem(String categoryId, String categoryName) {
-        adapter = new FirebaseRecyclerAdapter<VenueModel, VenueViewHolder>(
-                VenueModel.class, R.layout.custom_venue_item,
-                VenueViewHolder.class, venueItemRef.orderByChild("CatId").equalTo(categoryId)
-                // like SELECT * FROM VenueList WHERE catId = categoryId
-        ) {
+
+        Query categoryQuery = venueItemRef.orderByChild("CatId").equalTo(categoryId);
+        FirebaseRecyclerOptions<VenueModel> recyclerOptions = new FirebaseRecyclerOptions.Builder<VenueModel>()
+                .setQuery(categoryQuery, VenueModel.class)
+                .build();
+        // like SELECT * FROM VenueList WHERE catId = categoryId
+
+        adapter = new FirebaseRecyclerAdapter<VenueModel, VenueViewHolder>(recyclerOptions) {
             @Override
-            protected void populateViewHolder(VenueViewHolder venueViewHolder, VenueModel venueModel, int i) {
+            protected void onBindViewHolder(@NonNull VenueViewHolder venueViewHolder, int i, @NonNull VenueModel venueModel) {
                 venueViewHolder.txtVenueName.setText(venueModel.getName());
                 venueViewHolder.txtVenuePrice.setText(venueModel.getPrice());
                 Picasso.get().load(venueModel.getImage()).into(venueViewHolder.imgVenue);
@@ -159,19 +171,35 @@ public class VenueListActivity extends AppCompatActivity {
                         Toast.makeText(VenueListActivity.this, "Please check internet connection.", Toast.LENGTH_LONG).show();
                 });
             }
+
+            @NonNull
+            @Override
+            public VenueViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_venue_item, parent, false);
+                return new VenueViewHolder(itemView);
+            }
         };
+        adapter.startListening();
         recyclerVenue.setAdapter(adapter);
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
     // when search btn is clicked it will show the desired search result
     private void startSearch(CharSequence text) {
-        searchAdapter = new FirebaseRecyclerAdapter<VenueModel, VenueViewHolder>(
-                VenueModel.class, R.layout.custom_venue_item,
-                VenueViewHolder.class, venueItemRef.orderByChild("Name").equalTo(text.toString())) {
-            @Override
-            protected void populateViewHolder(VenueViewHolder venueViewHolder, VenueModel venueModel, int i) {
 
+        Query searchByName = venueItemRef.orderByChild("Name").equalTo(text.toString());
+        FirebaseRecyclerOptions<VenueModel> recyclerOptions = new FirebaseRecyclerOptions.Builder<VenueModel>()
+                .setQuery(searchByName, VenueModel.class)
+                .build();
+
+        searchAdapter = new FirebaseRecyclerAdapter<VenueModel, VenueViewHolder>(recyclerOptions) {
+            @Override
+            protected void onBindViewHolder(@NonNull VenueViewHolder venueViewHolder, int i, @NonNull VenueModel venueModel) {
                 venueViewHolder.txtVenueName.setText(venueModel.getName());
                 venueViewHolder.txtVenuePrice.setText(venueModel.getPrice());
                 Picasso.get().load(venueModel.getImage()).into(venueViewHolder.imgVenue);
@@ -184,13 +212,22 @@ public class VenueListActivity extends AppCompatActivity {
                     startActivity(venueIntent);
                 });
             }
+
+            @NonNull
+            @Override
+            public VenueViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_venue_item, parent, false);
+                return new VenueViewHolder(itemView);
+            }
         };
+        searchAdapter.startListening();
         recyclerVenue.setAdapter(searchAdapter); // set adapter for Recycler view in search result
     }
 
     // it will show the search suggestions when search option is clicked
     private void loadSuggestion() {
 
+        Log.d("phoneNoLoad", categoryId);
         venueItemRef.orderByChild("CatId").equalTo(categoryId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

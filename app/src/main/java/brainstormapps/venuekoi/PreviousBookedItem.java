@@ -2,14 +2,20 @@ package brainstormapps.venuekoi;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +53,14 @@ public class PreviousBookedItem extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         bookedDbReference = firebaseDatabase.getReference().child("BookingRequest");
 
-        bookedAdapter = new FirebaseRecyclerAdapter<VenueRequest, BookedItemHolder>(
-                VenueRequest.class, R.layout.custom_booked_item,
-                BookedItemHolder.class, bookedDbReference.orderByChild("uphone").equalTo(phone)) {
+        Query phoneQuery = bookedDbReference.orderByChild("uphone").equalTo(phone);
+        FirebaseRecyclerOptions<VenueRequest> recyclerOptions = new FirebaseRecyclerOptions.Builder<VenueRequest>()
+                .setQuery(phoneQuery, VenueRequest.class)
+                .build();
+
+        bookedAdapter = new FirebaseRecyclerAdapter<VenueRequest, BookedItemHolder>(recyclerOptions) {
             @Override
-            protected void populateViewHolder(BookedItemHolder bookedItemHolder, VenueRequest venueRequest, int i) {
+            protected void onBindViewHolder(@NonNull BookedItemHolder bookedItemHolder, int i, @NonNull VenueRequest venueRequest) {
                 bookedItemHolder.fetchBookingDate.setText(venueRequest.getBdate());
                 bookedItemHolder.fetchCategoryName.setText(venueRequest.getCatgName());
                 bookedItemHolder.fetchVenueName.setText(venueRequest.getVname());
@@ -59,8 +68,21 @@ public class PreviousBookedItem extends AppCompatActivity {
                 bookedItemHolder.fetchBookingId.setText(venueRequest.getBookingId());
                 bookedItemHolder.fetchBookingStatus.setText(convertRequestStatus(venueRequest.getStatus()));
             }
+
+            @NonNull
+            @Override
+            public BookedItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_booked_item, parent, false);
+                return new BookedItemHolder(itemView);
+            }
         };
+        bookedAdapter.startListening();
         bookedRecyclerView.setAdapter(bookedAdapter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     // it will convert Request Status from 0 => Placed, 1 => Confirmed, 2 => Payment Successful
